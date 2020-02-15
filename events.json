@@ -2,9 +2,9 @@
     "stock": "TSLA",
     "events": [
       {
-        "event_title": "Cybertruck",
-        "event_start": "2019-11-21",
-        "event_end": "2019-11-26",
+        "title": "Cybertruck",
+        "start_date": "2019-11-21",
+        "end_date": "2019-11-26",
         "hashtags": [ "#cybertruck" ]  
       }
     ]
