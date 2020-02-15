@@ -20,4 +20,4 @@ In this research we are interested in the following events:
 
 ### Requirements
 - Install python3 and pip3
-- Run the script 'install_dep.sh'
+- Install requirements with 'pip3 install -r requirements.txt'

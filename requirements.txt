@@ -1,0 +1,5 @@
+vaderSentiment
+tweepy
+python-dotenv
+pandas-datareader
+pandas
