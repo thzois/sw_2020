@@ -21,3 +21,6 @@ In this research we are interested in the following events:
 ### Requirements
 - Install python3 and pip3
 - Install requirements with 'pip3 install -r requirements.txt'
+
+Note: in requirements.txt we are using the branch "premium-search" from [tweepy](https://github.com/tweepy/tweepy) repository. In a future release that branch 
+will be merged into master. Hence, pip3 installation will fail and you will have to run "pip3 install tweepy". 

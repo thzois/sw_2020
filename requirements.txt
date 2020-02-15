@@ -1,5 +1,5 @@
 vaderSentiment
-tweepy
+git+https://github.com/tweepy/tweepy@premium-search
 python-dotenv
 pandas-datareader
 pandas
