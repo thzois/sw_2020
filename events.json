@@ -1,0 +1,28 @@
+{
+    "events": [
+      {
+        "event_title": "Cybertruck",
+        "event_start": "2020-02-01",
+        "event_end": "2020-02-06",
+        "hashtags": [ "#cybertruck" ]  
+      },
+      {
+        "event_title": "Elon Musk smokes weed",
+        "event_start": "2019-02-01",
+        "event_end": "2019-02-06",
+        "hashtags": [ "#elon_weed" ]  
+      },
+      {
+        "event_title": "Elon Musk does something",
+        "event_start": "2019-04-01",
+        "event_end": "2019-04-06",
+        "hashtags": [ "#something" ]  
+      },
+      {
+        "event_title": "Tesla raises price of ModelX",
+        "event_start": "2019-11-01",
+        "event_end": "2019-11-06",
+        "hashtags": [ "#modelX_raise" ]  
+      }
+    ]
+  }
