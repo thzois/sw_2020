@@ -36,20 +36,26 @@ def limit_handler(cursor):
 # Get Twitter data based on events.json and store 
 # them in separate files based on the event dates
 def get_twitter_data(events):
-    CONSUMER_KEY = os.getenv("TWITTER_API_KEY")
-    CONSUMER_SECRET = os.getenv("TWITTER_API_SECRET")
+    API_KEY = os.getenv("TWITTER_API_KEY")
+    API_SECRET = os.getenv("TWITTER_API_SECRET")
     ACCESS_TOKEN = os.getenv("TWITTER_ACCESS_TOKEN")
     ACCESS_TOKEN_SECRET = os.getenv("TWITTER_ACCESS_TOKEN_SECRET")
 
-    auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
+    auth = tweepy.OAuthHandler(API_KEY, API_SECRET)
     auth.set_access_token(ACCESS_TOKEN, ACCESS_TOKEN_SECRET)
     api = tweepy.API(auth)
     
     for event in events["events"]:
+        # prepare query string - when using multiple hashtags ( #example OR #Example )
+        query_string = ""
+        for i in range (0, len(event["hashtags"])):
+            if i == len(event["hashtags"]) - 1:
+                query_string += event["hashtags"][i]
+            else:
+                query_string += event["hashtags"][i] + " OR "
+
         tweets = { "tweets": [] }
-        # TODO: Check if date format is readable from TwitterAPI?
-        # Check http://docs.tweepy.org/en/latest/api.html
-        for items in limit_handler(tweepy.Cursor(api.search, q=event["hashtags"], since=event["start_date"], until=event["end_date"], lang="en").items()):
+        for items in limit_handler(tweepy.Cursor(api.search, q=query_string, until=event["end_date"], lang="en", include_entities=True).items(1)):
             tweets["tweets"].append(items)
 
         # Got all event data - write them to file
