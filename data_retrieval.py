@@ -33,6 +33,7 @@ def limit_handler(cursor):
             yield cursor.next()
         except tweepy.RateLimitError:
             time.sleep(15 * 60)
+        # TODO: needs fix - in case of an error the code will never stop
         except tweepy.TweepError:
             time.sleep(15 * 60)
         except StopIteration:
