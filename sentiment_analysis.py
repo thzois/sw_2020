@@ -30,6 +30,7 @@ def sentiment_analysis():
                 # here we have the results of sentiment analysis for this event
                 print(results)
 
+
 def main():
     sentiment_analysis()
 
