@@ -20,7 +20,7 @@ def read_events():
 def get_stock_prices(events):
     stock_data = []
     for event in events["events"]:
-        tmp = DataReader("TSLA", "yahoo", event["event_start"], event["event_end"])
+        tmp = DataReader(events["stock"], "yahoo", event["event_start"], event["event_end"])
         stock_data.append(tmp)
     return pd.concat(stock_data)
 
