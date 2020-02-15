@@ -33,11 +33,11 @@ def limit_handler(cursor):
             yield cursor.next()
         except tweepy.RateLimitError:
             time.sleep(15 * 60)
-        except tweepy.TweepError:
-            if tweepy.TweepError.code == 420 or tweepy.TweepError.code == 429
+        except tweepy.TweepError as e:
+            if e.response is not None and (e.response.status == 420 or e.response.status == 429):
                 time.sleep(15 * 60)
             else:
-                print("Break due to exception: ", tweepy.TweepError)
+                print("Break due to exception: ", e)
                 break
         except StopIteration:
             break
