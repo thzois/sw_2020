@@ -78,7 +78,8 @@ def get_twitter_data(events):
             tweets["tweets"].append(items._json)
         
         # got all event data - write them to file
-        with open("tweets/" + event["start_date"] + "_" + event["end_date"] + ".json", 'w') as outfile:
+        filename = event["start_date"] + "_" + event["end_date"] + ".json"
+        with open("tweets/" + filename, 'w') as outfile:
             json.dump(tweets, outfile, ensure_ascii=True, indent=4)
 
 

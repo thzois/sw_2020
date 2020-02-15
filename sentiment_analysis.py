@@ -21,14 +21,15 @@ def sentiment_analysis():
                 
                 # sentiment analysis 
                 analyzer = SentimentIntensityAnalyzer()
-                results = []
+                results = { "sent_analysis": [] }
                 for t in tweets:
                     vs = analyzer.polarity_scores(t)
                     vs["tweet"] = t
-                    results.append(vs)
+                    results["sent_analysis"].append(vs)
                 
-                # here we have the results of sentiment analysis for this event
-                print(results)
+                # here we have the results of sentiment analysis for this event - write to file
+                with open("results_sa/" + filename, 'w') as outfile:
+                    json.dump(results, outfile, ensure_ascii=True, indent=4)
 
 
 def main():
