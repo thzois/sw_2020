@@ -16,13 +16,12 @@ def read_events():
         return json.load(read_file)
 
 
-# Get stock prices based on events.json
+# Get stock prices based on events.json and store 
+# them to separate files based on the event dates
 def get_stock_prices(events):
-    stock_data = []
     for event in events["events"]:
-        tmp = DataReader(events["stock"], "yahoo", event["event_start"], event["event_end"])
-        stock_data.append(tmp)
-    return pd.concat(stock_data)
+        stock_price = DataReader(events["stock"], "yahoo", event["event_start"], event["event_end"])
+        stock_price.to_csv("stocks/" + event["event_start"] + "_" + event["event_end"] + ".csv")
 
 
 # Handle rate-limit of TwitterAPI
@@ -34,7 +33,8 @@ def limit_handler(cursor):
             time.sleep(15 * 60)
 
 
-# Get Twitter data based on events.json
+# Get Twitter data based on events.json and store 
+# them in separate files based on the event dates
 def get_twitter_data(events):
     CONSUMER_KEY = os.getenv("TWITTER_CONSUMER_KEY")
     CONSUMER_SECRET = os.getenv("TWITTER_CONSUMER_SECRET")
@@ -44,26 +44,24 @@ def get_twitter_data(events):
     auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
     auth.set_access_token(ACCESS_TOKEN, ACCESS_TOKEN_SECRET)
     api = tweepy.API(auth)
+    
+    for event in events["events"]:
+        tweets = { "tweets": [] }
+        # TODO: Check if date format is readable from TwitterAPI?
+        # Check http://docs.tweepy.org/en/latest/api.html
+        for items in limit_handler(tweepy.Cursor(api.search, q=event["hashtags"], since=event["event_start"], until=event["event_end"], lang="en").items()):
+            tweets["tweets"].append(items)
 
-    query = ''
-    for i in argv[2:]:
-        query += i
-        query += ' '
-
-    # results = api.search(q="#cybertruck #teslacybertruck", since='19-10-2019', until='24-10-2019', lang='en')
-    results = []
-    for items in limit_handler(tweepy.Cursor(api.search, q=query, since=argv[0], until=argv[1], lang="en").items(100)):
-        results.append(items)
-
-    results_json = json.dumps(results)
-
-    with open('data.txt', 'w') as outfile:
-        json.dump(results_json, outfile)
+        # Got all event data - write them to file
+        tweets_json = json.dumps(tweets)
+        with open("tweets/" + event["event_start"] + "_" + event["event_end"] + ".json", 'w') as outfile:
+            json.dump(tweets_json, outfile)
 
 
 def main():
     events = read_events()
-    stock_prices = get_stock_prices(events)
+    # get_twitter_data(events)
+    # get_stock_prices(events)
 
 
 if __name__ == "__main__":
