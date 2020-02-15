@@ -8,6 +8,7 @@ import tweepy
 import json
 import sys
 import os
+import time
 
 
 # Read events.json 
@@ -31,6 +32,8 @@ def limit_handler(cursor):
             yield cursor.next()
         except tweepy.RateLimitError:
             time.sleep(15 * 60)
+        except StopIteration:
+            break
 
 
 # Get Twitter data based on events.json and store 
@@ -55,13 +58,12 @@ def get_twitter_data(events):
                 query_string += event["hashtags"][i] + " OR "
 
         tweets = { "tweets": [] }
-        for items in limit_handler(tweepy.Cursor(api.search, q=query_string, until=event["end_date"], lang="en", include_entities=True).items(1)):
-            tweets["tweets"].append(items)
+        for items in limit_handler(tweepy.Cursor(api.search, q=query_string, until=event["end_date"], lang="en", include_entities=True).items()):
+            tweets["tweets"].append(items._json)
 
         # Got all event data - write them to file
-        tweets_json = json.dumps(tweets)
         with open("tweets/" + event["start_date"] + "_" + event["end_date"] + ".json", 'w') as outfile:
-            json.dump(tweets_json, outfile)
+            json.dump(tweets, outfile, ensure_ascii=True, indent=4)
 
 
 def main():
