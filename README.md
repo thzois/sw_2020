@@ -13,7 +13,6 @@ there are differences of sentiment within the demographics of the Twitter users 
 on the topic (engagement) etc.
 
 In this research we are interested in the following events:
-- <strong>3rd of June 2019</strong>: Tesla reaches a new minimum of $178.97 since 2014. 
 - <strong>24th of July 2019</strong>: Tesla suffers its worst day of the year after brutal earnings report and loss of technology chief.
 - <strong>21st of November 2019</strong>: Tesla unveils its new cyber truck.
 - <strong>4th of February 2020</strong>: Tesla reaches its highest stock price till date of $962.86.
