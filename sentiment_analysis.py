@@ -12,7 +12,7 @@ def sentiment_analysis():
         # perform sentiment analysis for each event
         for event in events["events"]:
             filename = event["start_date"] + "_" + event["end_date"] + ".json"
-            with open("tweets/" + filename, "r") as twitter_file:
+            with open("tweets/cleaned/" + filename, "r") as twitter_file:
                 twitter_data = json.load(twitter_file)        
                 # create a list of the tweets
                 tweets = []
