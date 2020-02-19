@@ -2,14 +2,15 @@ from dotenv import load_dotenv
 load_dotenv()
 
 from pandas_datareader.data import DataReader
-import pandas as pd
-import tweepy
+from datetime import datetime
+from datetime import timedelta
+from ast import literal_eval
 
+import tweepy
 import json
-import sys
 import os
 import time
-import datetime
+
 
 
 # read events.json 
@@ -18,34 +19,37 @@ def read_events():
         return json.load(read_file)
 
 
-# get stock prices based on events.json and store 
-# them to separate files based on the event dates
-def get_stock_prices(events):
-    for event in events["events"]:
-        stock_price = DataReader(events["stock"], "yahoo", event["start_date"], event["end_date"])
-        stock_price.to_csv("stocks/" + event["start_date"] + "_" + event["end_date"] + ".csv")
-
-
 # handle rate-limit of TwitterAPI
 def limit_handler(cursor):
+    # this is the response in the message that Twitter uses if account limit reached
+    account_exceed = "Request exceeds account’s current package request limits"
+
     while True:
         try:
             yield cursor.next()
-        except tweepy.RateLimitError:
+        except tweepy.RateLimitError as b:
+            print("Rate limit hit:", b)
             time.sleep(15 * 60)
         except tweepy.TweepError as e:
-            if e.response is not None and (e.response.status == 420 or e.response.status == 429):
-                time.sleep(15 * 60)
+            d = literal_eval(e.reason)
+            if account_exceed in d["message"]:
+                print("Monthly rate limit reached:", e)
+                break
+            elif e.response is not None:
+                if hasattr(e.response, 'status_code'):
+                    if e.response.status_code == 420 or e.response.status_code == 429:
+                        print("Rate limit hit:", e)
+                        time.sleep(15 * 60)
             else:
-                print("Break due to exception: ", e)
+                print("Break cause of exception:", e)
                 break
         except StopIteration:
             break
 
 
-# get Twitter data based on events.json and store 
+# get Twitter and stock data based on events.json and store 
 # them in separate files based on the event dates
-def get_twitter_data(events):
+def get_twitter_stock_data(events):
     API_KEY = os.getenv("TWITTER_API_KEY")
     API_SECRET = os.getenv("TWITTER_API_SECRET")
     ACCESS_TOKEN = os.getenv("TWITTER_ACCESS_TOKEN")
@@ -57,6 +61,12 @@ def get_twitter_data(events):
     api = tweepy.API(auth)
     
     for event in events["events"]:
+        print("[{} to {}]".format(event["start_date"], event["end_date"]), event["title"])
+        
+        stock_price = DataReader(events["stock"], "yahoo", event["start_date"], event["end_date"])
+        stock_price.to_csv("stocks/" + event["start_date"] + "_" + event["end_date"] + ".csv")
+        print("Stock data received")
+
         # prepare query string
         # see: https://developer.twitter.com/en/docs/tweets/rules-and-filtering/guides/using-premium-operators
         query_string = "("
@@ -69,24 +79,39 @@ def get_twitter_data(events):
 
         # twitter premium API expects date to be in format 'yyyyMMddHHmm'
         start_datetime = event["start_date"].replace("-", "") + "0000"
-        end_datetime = event["end_date"].replace("-", "") + "0000"
-        tweets = { "tweets": [] }
+        end_datetime = event["start_date"].replace("-", "") + "2359"
 
-        # tweepy docs: https://github.com/tweepy/tweepy/blob/premium-search/docs/api.rst
-        # premium API does not support 'lang' but returns 
-        for items in limit_handler(tweepy.Cursor(api.search_full_archive, environment_name=TWITTER_APP_ENV, query=query_string, fromDate=start_datetime, toDate=end_datetime).items()):
-            tweets["tweets"].append(items._json)
-        
+        tweets = { "tweets": [] }
+        start_dateobj = datetime.strptime(event["start_date"], '%Y-%m-%d').date()
+        end_dateobj = datetime.strptime(event["end_date"], '%Y-%m-%d').date()
+
+        # iterate each day and get max tweets as event["max_tweets_per_day"]
+        while True:
+            # tweepy docs: https://github.com/tweepy/tweepy/blob/premium-search/docs/api.rst - premium API does not support 'lang'
+            for items in limit_handler(tweepy.Cursor(api.search_full_archive, environment_name=TWITTER_APP_ENV, query=query_string, fromDate=start_datetime, toDate=end_datetime).items(event["max_tweets_per_day"])):
+                tweets["tweets"].append(items._json)
+            
+            # Move to netxt day
+            start_dateobj = start_dateobj + timedelta(days=1)
+            start_datetime = start_dateobj.strftime("%Y-%m-%d").replace("-", "") + "0000"
+            end_datetime = start_dateobj.strftime("%Y-%m-%d").replace("-", "") + "2359"
+            
+            # if the day is the next day of our end_date break
+            if(start_dateobj > end_dateobj):
+                break
+    
+        print("Tweets fetched:", len(tweets["tweets"]), "\n")
+
         # got all event data - write them to file
-        filename = event["start_date"] + "_" + event["end_date"] + ".json"
-        with open("tweets/" + filename, 'w') as outfile:
-            json.dump(tweets, outfile, ensure_ascii=True, indent=4)
+        if len(tweets["tweets"]) > 0:
+            filename = event["start_date"] + "_" + event["end_date"] + ".json"
+            with open("tweets/" + filename, 'w') as outfile:
+                json.dump(tweets, outfile, ensure_ascii=True, indent=4)
 
 
 def main():
     events = read_events()
-    # get_twitter_data(events)
-    # get_stock_prices(events)
+    # get_twitter_stock_data(events)
 
 
 if __name__ == "__main__":
