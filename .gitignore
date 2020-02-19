@@ -1,2 +1,4 @@
 .env
 *.DS*
+tweets/*.json
+tweets/cleaned/*.json
