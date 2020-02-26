@@ -1,4 +1,16 @@
-## Analysing Tesla Inc. stock price - The Social Web (Vrije Universiteit)
+## SWAnalytics - The Social Web (Vrije Universiteit)
+SWAnalytics is a tool that helps data-analysts to understand if there is any correlation between various events related with stock prices and user tweets (from Twitter). The tool can be configured through a file, events.json. In that file an analyst should provide:
+- The name of the stock price
+- X number of events where each one has
+  - A title
+  - A start date
+  - An end date
+  - A number of hashtags 
+  - The maximum number of tweets to search (for each day of the event)
+
+The tool treats each event as a separate entity. For each one retrieves 1) the relevant Twitter data and 2) the relevant stock price from Yahoo Finance. After some automatic data processing, the tool performs sentiment analysis for each tweet, using Vader in Python. Sentiment analysis produces the percentage of negativity, neutrality and positivity for that specific tweet. Finally, The tool builds and exposes a web-app with various interactive graphs on each page. Each page corresponds to one event. 
+ 
+### Use case scenario
 One of the most shorted stock this fiscal year on the market is [Tesla](https://www.tesla.com). At the end of January its short interest had reached 18% of its total available shares to trade. Controversial to 
 this high volume of short positions, Tesla’s stock has been rising ever since its lowest stock price since 2014, on the 3rd of June 2019 with a close of $178.97. 
 Before this time period Tesla had followed a sharp downward trend. Some of it could be explained by Elon Musk’s bad business attitude of announcing over optimistic 
