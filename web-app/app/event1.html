@@ -34,20 +34,16 @@
   <!-- Navigation -->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
     <div class="container">
-      <!-- small logo goes-->
-      <a class="navbar-brand js-scroll-trigger" href="#page-top"><img src="" style="width:38px;">&nbsp;<span
-          style="vertical-align:middle;">SW - Analytics Tool</span></a>
+      <a class="navbar-brand js-scroll-trigger" href="#page-top"><img src="./images/logo_swanalytics.png" style="width:200px;"></a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
         aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarResponsive">
+        <!-- SWAnalytics NAV | DO NOT REMOVE THIS LINE -->
         <ul class="navbar-nav ml-auto">
           <li class="nav-item">
             <a class="nav-link js-scroll-trigger" href="./event1.html" style="color:white">Event 1</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="./event2.html">Event2</a>
           </li>
         </ul>
       </div>
@@ -98,6 +94,7 @@
               <canvas id="size_year_pie" height="75"></canvas>
             </div>
           </div>
+          <!-- SWAnalytics CHART_1 | DO NOT REMOVE THIS LINE -->
           <script>
             var ctx = $("#size_year_pie");
             pie_chart(ctx, "/year/size_year.csv", "Percentage of size per year (Total: ");
@@ -118,6 +115,7 @@
               <canvas id="tpr_year" height="190"></canvas>
             </div>
           </div>
+          <!-- SWAnalytics CHART_2 | DO NOT REMOVE THIS LINE -->
           <script>
             var ctx = $("#tpr_year");
             bar_chart(ctx, "/year/tpr_year.csv", "TPR per year", "TPR", "Year");
@@ -135,7 +133,7 @@
   <!-- Footer -->
   <footer class="py-5 bg-dark">
     <div class="container">
-      <p class="m-0 text-center text-white">Copyright &copy; 2020 - SWAnalytics</p>
+      <p class="m-0 text-center text-white">Copyright &copy; 2020 All rights reserved | SWAnalytics</p>
     </div>
     <!-- /.container -->
   </footer>
