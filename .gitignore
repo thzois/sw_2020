@@ -1,4 +1,4 @@
-.env
+data-analysis/.env
 *.DS*
-tweets/*.json
-tweets/cleaned/*.json
+data-analysis/tweets/*.json
+data-analysis/tweets/cleaned/*.json

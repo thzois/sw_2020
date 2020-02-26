@@ -110,8 +110,9 @@ def get_twitter_stock_data(events):
 
 
 def main():
-    events = read_events()
+    # events = read_events()
     # get_twitter_stock_data(events)
+    print("GET DATA")
 
 
 if __name__ == "__main__":

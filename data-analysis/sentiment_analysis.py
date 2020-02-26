@@ -33,7 +33,8 @@ def sentiment_analysis():
 
 
 def main():
-    sentiment_analysis()
+    # sentiment_analysis()
+    print("SENT ANALYSIS")
 
 
 if __name__ == "__main__":

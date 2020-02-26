@@ -1,0 +1,26 @@
+version: '3.4'
+
+services:
+  # set DATA_ANALYSIS=true to trigger fetching, 
+  # cleaning and sentiment analysis of the data. 
+  data-analysis:
+    image: "data-analysis"
+    container_name: data-analysis
+    restart: always
+    build:
+      context: .
+      args:
+        - DATA_ANALYSIS=true
+
+  # the container should start only after data-analysis
+  web-app:
+    image: "nginx:1.17.4"
+    container_name: web-app
+    restart: always
+    depends_on: 
+      - data-analysis
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./web-app:/usr/share/nginx/html
+    ports:
+      - 8080:80

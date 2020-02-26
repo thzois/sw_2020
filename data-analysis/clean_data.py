@@ -29,8 +29,9 @@ def clean_data(events):
 
 
 def main():
-    events = read_events()
-    clean_data(events)
+    # events = read_events()
+    # clean_data(events)
+    print("CLEAN DATA")
 
 
 if __name__ == "__main__":
