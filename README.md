@@ -30,13 +30,12 @@ In this research we are interested in the following events:
 - <strong>4th of February 2020</strong>: Tesla reaches its highest stock price till date of $962.86.
 
 ### Requirements
-- Install python3 and pip3
-- Install requirements with 'pip3 install -r requirements.txt'
 - Install [Docker](https://docs.docker.com/install/) and [Docker Compose](https://docs.docker.com/compose/install/)
 
-<strong>Note</strong>: in requirements.txt we are using the branch "premium-search" from [tweepy](https://github.com/tweepy/tweepy) repository. In a future release that branch 
-will be merged into master. Hence, 'pip3 install -r requirements.txt' will fail at the point of installing 'tweepy' and you will have to install it after manually using 'pip3 install tweepy'
+<strong>Note</strong>: in Docker we are using the branch "premium-search" from [tweepy](https://github.com/tweepy/tweepy) repository. In a future release that branch will be merged into master. Hence, building the container will fail at the point of installing 'tweepy'. You will have to change the corresponding line in the Dockefile.
 
 ### Run the application
-- Run 'docker-compose -d up' inside the directory 'web-app'
+- Run 'docker-compose up -d --build' inside the main directory
 - Open your browser and navigate to localhost:8080
+
+In case you would like to skip the part of gathering, cleaning and sentiment analysis of the data because e.g: you have already done that, you need to set 'DATA_ANALYSIS=false' in docker-compose.yml.
