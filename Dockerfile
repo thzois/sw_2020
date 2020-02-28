@@ -5,7 +5,6 @@ RUN pip install --no-cache-dir vaderSentiment
 RUN pip install --no-cache-dir python-dotenv
 RUN pip install --no-cache-dir git+https://github.com/tweepy/tweepy@premium-search
 RUN pip install --no-cache-dir pandas-datareader
-RUN pip install --no-cache-dir pandas
 
 # copy files
 COPY data-analysis /data-analysis
