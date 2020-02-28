@@ -5,6 +5,7 @@ def read_events():
     with open("events.json", "r") as read_file:
         return json.load(read_file)
 
+
 def generate_html(events):
     navbars = []
     files = []
