@@ -40,23 +40,10 @@ def suppress_data(events):
             count_undiscovered = 0
             for t in full_tweets:
                 if t["user"]["location"] != None:
-                    country = None
                     location = re.split('; |- |,', t["user"]["location"])
-                    found = False
-                    for location_part in location:
-                        try:
-                            country = pycountry.countries.search_fuzzy(location_part)
-                            found = True
-                            break
-                        except:
-                            try:
-                                country = pycountry.countries.lookup(location_part)
-                                found = True
-                                break
-                            except:
-                                continue
+                    country = search_location(location)
 
-                    if not found:
+                    if not country:
                         location = t["user"]["location"].split(' ')
                         country = search_location(location)
                         if not country:
