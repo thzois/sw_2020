@@ -30,6 +30,7 @@ def clean_data(events):
     for event in events["events"]:
         event_file = event["start_date"] + "_" + event["end_date"] + ".json"
         with open("tweets/" + event_file, 'r') as read_file:
+        # with open("tweets/test.json", 'r') as read_file:
             # list (array) of tweets
             full_tweets = json.load(read_file)["tweets"]
             # iterrate the tweets for each event
@@ -119,6 +120,7 @@ def clean_data(events):
         # write to file the cleaned data
         if total_tweets_to_store > 0:
             with open("tweets/cleaned/" + event_file, 'w') as outfile:
+            # with open("tweets/cleaned/test_cleaned.json", 'w') as outfile:
                 json.dump(tweets_final, outfile, ensure_ascii=True, indent=4)
 
 
