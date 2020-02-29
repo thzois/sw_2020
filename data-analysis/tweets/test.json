@@ -1,0 +1,58 @@
+{
+    "tweets": [
+        {
+            "created_at": "Tue Feb 04 23:58:32 +0000 2020",
+            "id": 1224844721459085314,
+            "id_str": "1224844721459085314",
+            "text": "RT @evmom111: Yes, as investors we've had gains this year (hello! \ud83e\udd2f), but what I'm enjoying most is the surprise &amp; disruption @Tesla is cau\u2026",
+            "user": {
+                "id": 52166491,
+                "id_str": "52166491",
+                "location": "Greece",
+                "followers_count": 12249
+            },
+            "retweeted_status": {
+                "text": "Yes, as investors we've had gains this year (hello! \ud83e\udd2f), but what I'm enjoying most is the surprise &amp; disruption\u2026 https://t.co/bxipyrjbj8",
+                "extended_tweet": {
+                    "full_text": "TWEET_1"
+                }
+            }
+        },
+        {
+            "created_at": "Tue Feb 05 23:58:32 +0000 2020",
+            "id": 1224844721459085314,
+            "id_str": "1224844721459085314",
+            "text": "RT @evmom111: Yes, as investors we've had gains this year (hello! \ud83e\udd2f), but what I'm enjoying most is the surprise &amp; disruption @Tesla is cau\u2026",
+            "user": {
+                "id": 52166491,
+                "id_str": "52166491",
+                "location": "Greece",
+                "followers_count": 12249
+            },
+            "retweeted_status": {
+                "text": "Yes, as investors we've had gains this year (hello! \ud83e\udd2f), but what I'm enjoying most is the surprise &amp; disruption\u2026 https://t.co/bxipyrjbj8",
+                "extended_tweet": {
+                    "full_text": "TWEET_2"
+                }
+            }
+        },
+        {
+            "created_at": "Tue Feb 02 23:58:32 +0000 2020",
+            "id": 1224844721459085314,
+            "id_str": "1224844721459085314",
+            "text": "RT @evmom111: Yes, as investors we've had gains this year (hello! \ud83e\udd2f), but what I'm enjoying most is the surprise &amp; disruption @Tesla is cau\u2026",
+            "user": {
+                "id": 52166491,
+                "id_str": "52166491",
+                "location": null,
+                "followers_count": 12249
+            },
+            "retweeted_status": {
+                "text": "Yes, as investors we've had gains this year (hello! \ud83e\udd2f), but what I'm enjoying most is the surprise &amp; disruption\u2026 https://t.co/bxipyrjbj8",
+                "extended_tweet": {
+                    "full_text": "TWEET_3"
+                }
+            }
+        }
+    ]
+}
