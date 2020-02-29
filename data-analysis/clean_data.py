@@ -1,5 +1,6 @@
 import pycountry
 import json
+import re
 
 # // - Same tweets from the same user
 # // - location = null
@@ -12,70 +13,89 @@ def read_events():
         return json.load(read_file)
 
 
+def search_location(location):
+    country = None
+    for location_part in location:
+        try:
+            country = pycountry.countries.search_fuzzy(location_part)
+            break
+        except:
+            try:
+                country = pycountry.countries.lookup(location_part)
+                break
+            except:
+                continue
+    return country
+
+
 def suppress_data(events):
     for event in events["events"]:
         event_file = event["start_date"] + "_" + event["end_date"] + ".json"
         with open("tweets/" + event_file, 'r') as read_file:
             # list (array) of tweets
             full_tweets = json.load(read_file)["tweets"]
-            
-            mapping = {country.name: country.alpha_2 for country in pycountry.countries}
             # iterrate the tweets for each event
             tweets = { "tweets": [] }
-            for t in full_tweets:    
-                
+            count_undiscovered = 0
+            for t in full_tweets:
                 if t["user"]["location"] != None:
-                    try:
-                        location = [t["user"]["location"]]
-                        standard_name = cc.convert(names = location, to = 'name_short')
-                        print(standard_name, " - ", t["user"]["location"])
-                    except:
-                        print("None - ", t["user"]["location"])
-                    
-                # if t["user"]["location"] not None:
-                #     tweet = {}
-                #     tweet["created_at"] = t["created_at"]
-                #     tweet["user_id"] = t["user"]["id"]
-                #     tweet["user_location"]= t["user"]["location"]
-                #     tweet["user_followers"] = t["user"]["followers_count"]
+                    country = None
+                    # loc = t["user"]["location"].split(',')
+                    location = re.split('; |- |,', t["user"]["location"])
+                    found = False
+                    for location_part in location:
+                        try:
+                            country = pycountry.countries.search_fuzzy(location_part)
+                            found = True
+                            break
+                        except:
+                            try:
+                                country = pycountry.countries.lookup(location_part)
+                                found = True
+                                break
+                            except:
+                                continue
 
+                    if not found:
+                        location = t["user"]["location"].split(' ')
+                        country = search_location(location)
+                        if not country:
+                            print(t["user"]["location"])
+                            count_undiscovered += 1
+                    if country:
+                        tweet = {
+                            "created_at": t["created_at"],
+                            "user_id": t["user"]["id"],
+                            "user_location": {
+                                'alpha_2': country.alpha_2,
+                                'alpha_3': country.alpha_3,
+                                'name': country.name,
+                                'numeric': country.numeric,
+                                'official_name': country.official_name
+                            },
+                            "user_followers": t["user"]["followers_count"]
+                        }
 
+                        if "retweeted_status" in t:
+                            try:
+                                tweet["text"] = t["retweeted_status"]["extended_tweet"]["full_text"]
+                            except:
+                                tweet["text"] = t["retweeted_status"]["text"]
+                        else:
+                            try:
+                                tweet["text"] = t["extended_tweet"]["full_text"]
+                            except:
+                                tweet["text"] = t["text"]
 
-                #     if "extended_tweet" in t:
-                #         try:
-                #             tweet = t["extended_tweet"]["full_text"]
-                #         except:
-                #             tweet = t["text"]
-                #     elif "retweeted_status" in t:
-                #         try:
-                #             tweet = t["retweeted_status"]["extended_tweet"]["full_text"]
-                #         except:
-                #             tweet = t["retweeted_status"]["text"]
-                #     else:
-                #         tweet = t["text"]
-
-                #     tweets["tweets"].append(tweet)
-                #     # if "retweeted_status" in t:
-                #     #     try:
-                #     #         tweet = t["retweeted_status"]["extended_tweet"]["full_text"]
-                #     #     except:
-                #     #         tweet = t["retweeted_status"]["text"]
-                #     # else:
-                #     #     try:
-                #     #         tweet = t["extended_tweet"]["full_text"]
-                #     #     except:
-                #     #         tweet = t["text"]
-
-                
-        break
-
+                        tweets["tweets"].append(tweet)
+                        print(count_undiscovered)
 
         # TODO: Remove comments to store cleaned data in another directory
         # later we will perform sentiment analysis
         # store the cleaned data
-        # if len(tweets["tweets"]) > 0:
-        #     with open("tweets/cleaned/" + event_file, 'w') as outfile:
-        #         json.dump(tweets, outfile, ensure_ascii=True, indent=4)
+        if len(tweets["tweets"]) > 0:
+            with open("tweets/cleaned/" + event_file, 'w') as outfile:
+                json.dump(tweets, outfile, ensure_ascii=True, indent=4)
 
 
 def main():
