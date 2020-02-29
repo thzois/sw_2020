@@ -4,6 +4,7 @@ import json
 import re
 
 
+
 # read events.json 
 def read_events():
     with open("events.json", "r") as read_file:
@@ -52,27 +53,18 @@ def clean_data(events):
                             total_tweets_loc_undesc += 1
                     if country:
                         tweet = {
-                            "created_at": datetime.strptime(t["created_at"], "%a %b %y %H:%M:%S %z %Y").strftime("%Y-%m-%d %H:%M:%S"),
+                            "created_at": datetime.strptime(t["created_at"], "%a %b %d %H:%M:%S %z %Y").strftime("%Y-%m-%d %H:%M:%S"),
+                            "created_at_original": t["created_at"],
                             "user_id": t["user"]["id"],
                             "user_location": {
                                 'alpha_2': country[0].alpha_2,
                                 'alpha_3': country[0].alpha_3,
                                 'name': country[0].name,
                                 'numeric': country[0].numeric,
-                                'official_name': country[0].official_name
-                                if hasattr(country[0], 'official_name') else None
+                                'official_name': country[0].official_name if hasattr(country[0],'official_name') else None
                             },
-                            "user_followers": t["user"]["followers_count"],
-                            'is_duplicate': False
+                            "user_followers": t["user"]["followers_count"]
                         }
-                    ### testing start
-                    # tweet = {
-                    #     "created_at": datetime.strptime(t["created_at"], "%a %b %d %H:%M:%S %z %Y").strftime("%Y-%m-%d %H:%M:%S"),
-                    #     "user_id": t["user"]["id"],
-                    #     "user_followers": t["user"]["followers_count"],
-                    #     'is_duplicate': False
-                    # }
-                    ### testing end
 
                         if "extended_tweet" in t:
                             try:
@@ -90,38 +82,44 @@ def clean_data(events):
                         tweets["tweets"].append(tweet)
 
         tweets_per_user = {}
-        for tweet in tweets['tweets']:
-            user_tweets = tweets_per_user.get(tweet['user_id'])
+        for tweet in tweets["tweets"]:
+            user_tweets = tweets_per_user.get(tweet["user_id"])
             if not user_tweets:
-                tweets_per_user.update({tweet['user_id']: {
-                    'tweets': [tweet],
-                    'is_bot': False
+                tweets_per_user.update({tweet["user_id"]: {
+                        "tweets": [tweet],
+                        "is_bot": False
                     }})
             else:
-                print(user_tweets)
-                user_tweets['tweets'].append(tweet)
-        print(tweets_per_user)
-
-        # Sort by date
-        for user_id, user_data in tweets_per_user.items():
-            user_data['tweets'].sort(key=lambda x: datetime.strptime(x['created_at'], "%Y-%m-%d %H:%M:%S"))
-
-        tweets_per_user_final = {}
-        # identify duplicate tweets per user
+                tweets_per_user.get(tweet["user_id"])["tweets"].append(tweet)
+        
+        # discard duplicate tweets per user
+        tweets_final_list = []        
+        total_tweets_dup = 0
         for user_id, user_tweets in tweets_per_user.items():
-            tweets_per_user_final.update({user_id: [user_tweets['tweets'][0]]})
-            for i in range(1, len(user_tweets['tweets'])):
-                found_duplicate = False
-                for tweet in tweets_per_user_final[user_id]:
-                    if user_tweets['tweets'][i]['text'] == tweet['text']:
-                        found_duplicate = True
-                        print("duplication removed")
-                if not found_duplicate:
-                    tweets_per_user_final[user_id].append(user_tweets['tweets'][i])
+            for i in range(0, len(user_tweets['tweets'])):
+                is_duplicate = False
+                for j in range(i + 1, len(user_tweets['tweets'])):
+                    if user_tweets['tweets'][i]['text'] == user_tweets['tweets'][j]['text']:
+                        total_tweets_dup += 1
+                        is_duplicate = True
+                if not is_duplicate:
+                    tweets_final_list.append(user_tweets['tweets'][i])
 
-        if len(tweets_per_user_final) > 0:
-            with open("tweets/cleaned/" + event_file, 'w+') as outfile:
-                json.dump(tweets_per_user_final, outfile, ensure_ascii=True, indent=4)
+        total_tweets_to_store = len(tweets_final_list)
+
+        # print statistics
+        tweets_final = {}
+        tweets_final["total_tweets"] = total_tweets
+        tweets_final["tweets_with_location"] = total_tweets_loc
+        tweets_final["tweets_disc_unknown_location"] = total_tweets_loc_undesc
+        tweets_final["duplicate_tweets"] = total_tweets_dup
+        tweets_final["tweets_stored"] = total_tweets_to_store
+        tweets_final["tweets"] = tweets_final_list
+        
+        # write to file the cleaned data
+        if total_tweets_to_store > 0:
+            with open("tweets/cleaned/" + event_file, 'w') as outfile:
+                json.dump(tweets_final, outfile, ensure_ascii=True, indent=4)
 
 
 def main():
