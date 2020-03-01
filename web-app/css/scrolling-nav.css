@@ -14,8 +14,17 @@ header {
   }
 }
 
+.active {
+	background-color:rgb(160, 160, 160)!important;
+	border-color:rgb(160, 160, 160)!important;
+}
+
 section {
   padding: 100px 0;
+}
+
+.highlight {
+	color: #007bff;
 }
 
 .chartjs_title{
@@ -25,10 +34,3 @@ section {
 	color:#666;
 	margin-bottom:10px;	
 }
-
-.graph_viz{
-	height:350px; 
-	border:1px solid; 
-	border-color:#D8D8D8;
-}
-

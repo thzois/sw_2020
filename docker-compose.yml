@@ -10,7 +10,7 @@ services:
     build:
       context: .
       args:
-        - DATA_ANALYSIS=true
+        - DATA_ANALYSIS=false
 
   # the container should start only after data-analysis
   web-app:
