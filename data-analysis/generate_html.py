@@ -26,6 +26,7 @@ def generate_html(events):
     for i in range(1, len(events['events']) + 1):
         # navbar
         nav = ''
+        # DO NOT MODIFY THE SPACING IN THE NAV STRING
         for j in range(1, len(events['events']) + 1):
             if i == j:
                 # add style=color: white (active page)
@@ -52,6 +53,7 @@ def generate_html(events):
                     # add 2 spaces
                     hashtags += ht + ' &nbsp;'
 
+                # DO NOT MODIFY THE SPACING IN THE STATISTICS STRING
                 statistics.append( 
     f'\
       <div class="row">\n \
