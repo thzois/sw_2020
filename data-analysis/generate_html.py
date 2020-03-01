@@ -57,6 +57,11 @@ def generate_html(events):
                 statistics.append( 
     f'\
       <div class="row">\n \
+        <div class="col-md-12 text-right">\n \
+          <a href="https://github.com/thzois/sw_2020" target="_blank"><img src="./images/github.png" width="110" alt="Fork me on GitHub"></a>\n \
+        </div>\n \
+     </div>\n \
+     <div class="row">\n \
         <div class="col-md-12 text-center">\n \
             <h3></br>{event["title"]}</h3>\n \
         </div>\n \
@@ -66,14 +71,15 @@ def generate_html(events):
          <div class="col-md-6">\n \
              <ul class="list-group">\n \
                  <li class="list-group-item active">Data collection information</li>\n \
-                 <li class="list-group-item">Event dates: <span class="highlight">{event["start_date"]}</span> until <span class="highlight">{event["end_date"]}</span></li>\n \
+                 <li class="list-group-item">Event start: <span class="highlight">{event["start_date"]}</span></li>\n \
+                 <li class="list-group-item">Event end: &nbsp;<span class="highlight">{event["end_date"]}</span></li>\n \
                  <li class="list-group-item">Hashtags: <span class="highlight">{hashtags}</span></li>\n \
-                 <li class="list-group-item">Total tweets: <span class="highlight">{twitterd["total_tweets"]}</span></li>\n \
              </ul>\n \
          </div>\n \
          <div class="col-md-6">\n \
              <ul class="list-group">\n \
                  <li class="list-group-item active">Processing information</li>\n \
+                 <li class="list-group-item">Total tweets: <span class="highlight">{twitterd["total_tweets"]}</span></li>\n \
                  <li class="list-group-item">Tweets with location: <span class="highlight">{twitterd["tweets_with_location"]}</span></li>\n \
                  <li class="list-group-item">Tweets with unknown location: <span class="highlight">{twitterd["tweets_disc_unknown_location"]}</span></li>\n \
                  <li class="list-group-item">Duplicate tweets: <span class="highlight">{twitterd["duplicate_tweets"]}</span></li>\n \
