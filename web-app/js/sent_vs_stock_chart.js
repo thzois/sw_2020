@@ -1,18 +1,19 @@
 function sentiment_vs_stock(ctx, filename, title, yLabel, xLabel){
 
-  $.ajaxSetup({
-    async: false
-  });
-
   var results;
 
-  // Get results file 
-  $.getJSON( "results/" + filename, function( data ) {
-    results = data;
-  }).fail(function() {
-    console.log("Could not load file: " + filename);
+  $.ajax({
+    url: "results/" + filename,
+    async: false,
+    dataType: 'json',
+    success: function (data) {
+      results = data;
+    },
+    error: function () {
+      alert("Could not load file: " + filename);
+    }
   });
-
+  
   console.log(results);
 
   // var years = [2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017];
