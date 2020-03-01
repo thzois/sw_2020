@@ -54,42 +54,53 @@
 
 
   <!-- START Main content -->
-  <section id="event1" class="bg-light">
+  <section class="bg-light">
     <div class="container">
       <div class="row">
         <div class="col-md-12 mx-auto">
-          <h2>Graph 1</h2>
+          <h2>Heading</h2>
           <p class="lead" style="text-align: justify;">Some text</p>
-          <div class="row justify-content-center">
-            <div class="col-md-12">
-              <canvas id="size_year_pie" height="75"></canvas>
+          <div class="row justify-content-center" style="margin-top:50px;">
+            <div class="col-md-6">
+              <canvas id="sent_stock" height="190"></canvas>
+            </div>          
+            <div class="col-md-6">  
+              <canvas id="cor_index" height="190"></canvas>
             </div>
           </div>
-          <!-- ### SWAnalytics CHART_1 ### | DO NOT REMOVE THIS LINE -->
           <script>
-            var ctx = $("#size_year_pie");
-            pie_chart(ctx, "/year/size_year.csv", "Percentage of size per year (Total: ");
+            var ctx = $("#sent_stock");
+            // ### SWAnalytics CHART_1 ### | DO NOT REMOVE THIS LINE
+
+            var ctx = $("#cor_index");
+            // ### SWAnalytics CHART_2 ### | DO NOT REMOVE THIS LINE
           </script>
         </div>
       </div>
     </div>
   </section>
 
-  <section id="event2">
+  
+  <section>
     <div class="container">
       <div class="row">
         <div class="col-md-12 mx-auto">
-          <h2>Graph 2</h2>
+          <h2>Heading</h2>
           <p class="lead" style="text-align: justify;">Some text</p>
           <div class="row justify-content-center" style="margin-top:50px;">
-            <div class="col-md-12">
-              <canvas id="tpr_year" height="190"></canvas>
+            <div class="col-md-6">
+              <canvas id="world_map" height="190"></canvas>
+            </div>          
+            <div class="col-md-6">  
+              <canvas id="world_bar" height="190"></canvas>
             </div>
           </div>
-          <!-- ### SWAnalytics CHART_2 ### | DO NOT REMOVE THIS LINE -->
           <script>
-            var ctx = $("#tpr_year");
-            bar_chart(ctx, "/year/tpr_year.csv", "TPR per year", "TPR", "Year");
+            var ctx = $("#world_map");
+            // ### SWAnalytics CHART_3 ### | DO NOT REMOVE THIS LINE
+
+            var ctx = $("#world_bar");
+            // ### SWAnalytics CHART_4 ### | DO NOT REMOVE THIS LINE
           </script>
         </div>
       </div>
