@@ -64,7 +64,7 @@ def get_twitter_stock_data(events):
         print("[{} to {}]".format(event["start_date"], event["end_date"]), event["title"])
         
         stock_price = DataReader(events["stock"], "yahoo", event["start_date"], event["end_date"])
-        stock_price.to_csv("stocks/" + event["start_date"] + "_" + event["end_date"] + ".csv")
+        stock_price.to_csv("../web-app/results/stocks/" + event["start_date"] + "_" + event["end_date"] + ".csv")
         print("Stock data received")
 
         # prepare query string

@@ -25,7 +25,7 @@ def sentiment_analysis():
                     td["compound"] = vs["compound"]
                 
                 # here we have the results of sentiment analysis for this event - write to file
-                with open("results_sa/" + filename, 'w') as outfile:
+                with open("../web-app/results/" + filename, 'w') as outfile:
                     json.dump(twitter_data, outfile, ensure_ascii=True, indent=4)
 
 
