@@ -40,6 +40,11 @@ def generate_html(events):
             <a class="nav-link js-scroll-trigger" href="./event{j}.html">Event {j}</a>\n \
          </li>\n '
 
+        nav += f'\
+         <li class="nav-item">\n \
+            <a href="https://github.com/thzois/sw_2020" target="_blank"><img src="./images/github_white.png" width="110" alt="Fork me on GitHub"></a>\n \
+         </li>\n '
+
         navbars.append(nav)
         files.append(open(f'../web-app/event{i}.html', 'w'))
 
@@ -56,11 +61,6 @@ def generate_html(events):
                 # DO NOT MODIFY THE SPACING IN THE STATISTICS STRING
                 statistics.append( 
     f'\
-      <div class="row">\n \
-        <div class="col-md-12 text-right">\n \
-          <a href="https://github.com/thzois/sw_2020" target="_blank"><img src="./images/github.png" width="110" alt="Fork me on GitHub"></a>\n \
-        </div>\n \
-     </div>\n \
      <div class="row">\n \
         <div class="col-md-12 text-center">\n \
             <h3></br>{event["title"]}</h3>\n \
