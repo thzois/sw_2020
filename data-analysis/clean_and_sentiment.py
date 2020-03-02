@@ -1,3 +1,5 @@
+from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
+
 from datetime import datetime
 import pycountry
 import json
@@ -26,11 +28,10 @@ def search_location(location):
     return country
 
 
-def clean_data(events):
+def clean_and_sentiment(events):
     for event in events["events"]:
         event_file = event["start_date"] + "_" + event["end_date"] + ".json"
         with open("tweets/" + event_file, 'r') as read_file:
-        # with open("tweets/test.json", 'r') as read_file:
             # list (array) of tweets
             full_tweets = json.load(read_file)["tweets"]
             # iterrate the tweets for each event
@@ -119,14 +120,23 @@ def clean_data(events):
         
         # write to file the cleaned data
         if total_tweets_to_store > 0:
-            with open("tweets/cleaned/" + event_file, 'w') as outfile:
-            # with open("tweets/cleaned/test_cleaned.json", 'w') as outfile:
+            # perform sentiment analysis
+            analyzer = SentimentIntensityAnalyzer()
+            for i in range(0, total_tweets_to_store):
+                td = tweets_final["tweets"][i]
+                vs = analyzer.polarity_scores(td["text"])
+                td["neg"] = vs["neg"]
+                td["neu"] = vs["neu"]
+                td["pos"] = vs["pos"]
+                td["compound"] = vs["compound"]
+            
+            with open("tweets/results/" + event_file, 'w') as outfile:
                 json.dump(tweets_final, outfile, ensure_ascii=True, indent=4)
 
 
 def main():
     events = read_events()
-    clean_data(events)
+    clean_and_sentiment(events)
 
 
 if __name__ == "__main__":
