@@ -51,7 +51,7 @@ def generate_html(events):
         # statistics - open file for this event
         for event in events["events"]:
             filename = event["start_date"] + "_" + event["end_date"] + ".json"
-            with open("tweets/cleaned/" + filename, "r") as twitter_file:
+            with open("tweets/results/" + filename, "r") as twitter_file:
                 twitterd = json.load(twitter_file)
                 hashtags = ''
                 for ht in event["hashtags"]:
@@ -69,7 +69,7 @@ def generate_html(events):
      <div class="row"><br></div>\n \
      <div class="row">\n \
          <div class="col-md-6">\n \
-             <ul class="list-group">\n \
+             <ul id="{event["start_date"]}_{event["end_date"]}" class="list-group-1">\n \
                  <li class="list-group-item active">Data collection information</li>\n \
                  <li class="list-group-item">Event start: <span class="highlight">{event["start_date"]}</span></li>\n \
                  <li class="list-group-item">Event end: &nbsp;<span class="highlight">{event["end_date"]}</span></li>\n \
