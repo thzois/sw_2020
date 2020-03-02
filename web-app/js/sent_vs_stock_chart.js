@@ -1,20 +1,87 @@
 function sentiment_vs_stock(ctx, filename, title, yLabel, xLabel){
 
-  var results;
+  var tweets;
 
   $.ajax({
-    url: "results/" + filename,
+    url: "results/" + filename + ".json",
     async: false,
     dataType: 'json',
     success: function (data) {
-      results = data;
+      tweets = data;
     },
     error: function () {
-      alert("Could not load file: " + filename);
+      alert("Could not load file: " + filename + ".json");
     }
   });
+
+  var stock;
+  $.ajax({
+    url: "results/stocks/" + filename + ".csv",
+    async: false,
+    dataType: 'text',
+    success: function(data) {
+      stock = $.csv.toObjects(data);
+    },
+    error: function () {
+      alert("Could not load file: " + filename + ".csv");
+    }
+  });
+
+  // normalize stock price
+  var max_idx = 0;
+  for(var i = 0; i < stock.length; i++)
+    if(stock[i]["Adj Close"] > stock[max_idx]["Adj Close"])
+      max_idx = i;
+    
+  for(i = 0; i < stock.length; i++)
+    if(i !== max_idx)
+      stock[i]["Adj Close"] = stock[i]["Adj Close"] / stock[max_idx]["Adj Close"];
+    
+  stock[max_idx]["Adj Close"] = 1;
   
-  console.log(results);
+
+  // get all the tweets for each day and calculate an avg sentiment
+  for(i = 0; i < stock.length; i++)
+  {
+
+  }
+
+  // var myChart = new Chart(ctx, {
+  //                               responsive: true,
+  //                               type: 'line',
+  //                               data: {
+  //                               labels: months,
+  //                                   datasets: metric_per_year_month,
+  //                                 },
+  //                                 options: {
+  //                                     title: {
+  //                                         display: true,
+  //                                         text: title
+  //                                     },
+                                      
+  //                                     legend: {
+  //                                         position: 'top'
+  //                                     },
+  //                                     tooltips: {
+  //                                       mode: 'label',
+  //                                     },
+  //                                     scales: {
+  //                                       yAxes: [{
+  //                                         ticks: custom_ticks,
+  //                                         scaleLabel: {
+  //                                           display: true,
+  //                                           labelString: yLabel
+  //                                         }
+  //                                       }],
+  //                                       xAxes: [{
+  //                                         scaleLabel: {
+  //                                           display: true,
+  //                                           labelString: xLabel
+  //                                         }
+  //                                       }]
+  //                                     } 
+  //                                 }
+  //                             });
 
   // var years = [2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017];
   // var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"]
@@ -72,41 +139,4 @@ function sentiment_vs_stock(ctx, filename, title, yLabel, xLabel){
   // }
 
   // custom_ticks["beginAtZero"] = true;
-
-  // var myChart = new Chart(ctx, {
-  //                               responsive: true,
-  //                               type: 'line',
-  //                               data: {
-  //                               labels: months,
-  //                                   datasets: metric_per_year_month,
-  //                                 },
-  //                                 options: {
-  //                                     title: {
-  //                                         display: true,
-  //                                         text: title
-  //                                     },
-                                      
-  //                                     legend: {
-  //                                         position: 'top'
-  //                                     },
-  //                                     tooltips: {
-  //                                       mode: 'label',
-  //                                     },
-  //                                     scales: {
-  //                                       yAxes: [{
-  //                                         ticks: custom_ticks,
-  //                                         scaleLabel: {
-  //                                           display: true,
-  //                                           labelString: yLabel
-  //                                         }
-  //                                       }],
-  //                                       xAxes: [{
-  //                                         scaleLabel: {
-  //                                           display: true,
-  //                                           labelString: xLabel
-  //                                         }
-  //                                       }]
-  //                                     } 
-  //                                 }
-  //                             });
 }
