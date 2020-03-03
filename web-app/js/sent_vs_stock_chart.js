@@ -59,7 +59,7 @@ function sentiment_vs_stock(ctx, filename){
                                   options: {
                                       title: {
                                           display: true,
-                                          text: "Sentiment vs Stock Price"
+                                          text: "Sentiment vs Stock Price (per day)"
                                       },
                                       
                                       legend: {

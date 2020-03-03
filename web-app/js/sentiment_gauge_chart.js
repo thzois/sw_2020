@@ -33,7 +33,7 @@ function sentiment_gauge(ctx, filename){
                                   options: {
                                     title: { 
                                       display: true,
-                                      text: "Feelings for all the event days"
+                                      text: "Overall sentiment for the event"
                                     },
                                     tooltips: {
                                       callbacks: {
