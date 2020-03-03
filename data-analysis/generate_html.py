@@ -21,6 +21,8 @@ def remove_old_html_files():
 def generate_html(events):
     navbars = []
     statistics = []
+    sentiment_vs_stock_charts = []
+    sentiment_gauges = []
     files = []
     
     for i in range(1, len(events['events']) + 1):
@@ -51,6 +53,9 @@ def generate_html(events):
         # statistics - open file for this event
         for event in events["events"]:
             filename = event["start_date"] + "_" + event["end_date"] + ".json"
+            sentiment_vs_stock_charts.append("\t\t\t\t\t\tsentiment_vs_stock(ctx, '" + filename + "');\n")
+            sentiment_gauges.append("\t\t\t\t\t\tsentiment_gauge(ctx, '" + filename + "');\n")
+
             with open("tweets/results/" + filename, "r") as twitter_file:
                 twitterd = json.load(twitter_file)
                 hashtags = ''
@@ -102,6 +107,10 @@ def generate_html(events):
                     file.write(f'\t\t\t\t<ul class="navbar-nav ml-auto">\n {navbars[idx]} \t\t\t</ul>\n')
                 if '### SWAnalytics STATISTICS' in line:
                     file.write(statistics[idx])
+                if '### SWAnalytics SENTIMENT_STOCK' in line:
+                    file.write(sentiment_vs_stock_charts[idx])
+                if '### SWAnalytics SENTIMENT_GAUGE' in line:
+                    file.write(sentiment_gauges[idx])
                 idx += 1
 
 
