@@ -27,6 +27,7 @@
   <!-- Size of graph charts -->
   <script src="js/jquery-csv.js"></script>
   <script src="js/sent_vs_stock_chart.js"></script>
+  <script src="js/sentiment_gauge_chart.js"></script>
   <script src="js/bar_chart.js"></script>
 
 </head>
@@ -64,18 +65,18 @@
           <p class="lead" style="text-align: justify;">Some text</p>
           <div class="row justify-content-center" style="margin-top:50px;">
             <div class="col-md-6">
-              <canvas id="sent_stock" height="190"></canvas>
+              <canvas id="sent_stock" height="250"></canvas>
             </div>          
             <div class="col-md-6">  
-              <canvas id="cor_index" height="190"></canvas>
+              <canvas id="sent_gauge" height="250"></canvas>
             </div>
           </div>
           <script>
             var ctx = $("#sent_stock");
-            // ### SWAnalytics CHART_1 ### | DO NOT REMOVE THIS LINE
+            // ### SWAnalytics SENTIMENT_STOCK ### | DO NOT REMOVE THIS LINE
 
-            var ctx = $("#cor_index");
-            // ### SWAnalytics CHART_2 ### | DO NOT REMOVE THIS LINE
+            var ctx = $("#sent_gauge");
+            // ### SWAnalytics SENTIMENT_GAUGE ### | DO NOT REMOVE THIS LINE
           </script>
         </div>
       </div>
