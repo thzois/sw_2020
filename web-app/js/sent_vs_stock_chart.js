@@ -41,15 +41,16 @@ function sentiment_vs_stock(ctx, filename){
                                         data: sentiment_data,
                                         label: "Sentiment",
                                         borderColor: "#0582CA",
+                                        pointBackgroundColor: "#0582CA",
                                         backgroundColor: "#0582CA",
                                         borderWidth: 2,
-                                        fillColor: "grey",
                                         fill: false
                                       },
                                       {
                                         data: stock_data,
                                         label: "Stock",
                                         borderColor: "#f38b4a",
+                                        pointBackgroundColor: "#f38b4a",
                                         backgroundColor: "#f38b4a",
                                         borderWidth: 2,
                                         fill: false
@@ -59,7 +60,7 @@ function sentiment_vs_stock(ctx, filename){
                                   options: {
                                       title: {
                                           display: true,
-                                          text: "Sentiment vs Stock Price (per day)"
+                                          text: "Sentiment vs stock price (per day)"
                                       },
                                       
                                       legend: {
