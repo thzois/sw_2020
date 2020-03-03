@@ -86,12 +86,6 @@ function sentiment_vs_stock(ctx, filename){
                                           scaleLabel: {
                                             display: true
                                           }
-                                        }],
-                                        xAxes: [{
-                                          scaleLabel: {
-                                            display: true,
-                                            labelString: "Date"
-                                          }
                                         }]
                                       } 
                                   }
