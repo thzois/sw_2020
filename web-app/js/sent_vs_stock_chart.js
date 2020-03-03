@@ -72,7 +72,7 @@ function sentiment_vs_stock(ctx, filename){
                                                 if(t.datasetIndex == 0)
                                                   return "Positivity: " + (t.yLabel.toFixed(2) * 100) + "%";
                                                 else
-                                                  return "Real price: " + stock_real[t.index].toFixed(3) + "$";
+                                                  return "Real price: $" + stock_real[t.index].toFixed(3);
                                             }
                                         }
                                       },
