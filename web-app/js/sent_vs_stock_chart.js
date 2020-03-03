@@ -1,142 +1,99 @@
-function sentiment_vs_stock(ctx, filename, title, yLabel, xLabel){
+function sentiment_vs_stock(ctx, filename){
 
-  var tweets;
+  var app_data;
 
   $.ajax({
-    url: "results/" + filename + ".json",
+    url: "results/sentiment/" + filename,
     async: false,
     dataType: 'json',
     success: function (data) {
-      tweets = data;
+      app_data = data;
     },
     error: function () {
-      alert("Could not load file: " + filename + ".json");
+      alert("Could not load file: " + filename);
     }
   });
 
-  var stock;
-  $.ajax({
-    url: "results/stocks/" + filename + ".csv",
-    async: false,
-    dataType: 'text',
-    success: function(data) {
-      stock = $.csv.toObjects(data);
-    },
-    error: function () {
-      alert("Could not load file: " + filename + ".csv");
-    }
-  });
-
-  // normalize stock price
-  var max_idx = 0;
-  for(var i = 0; i < stock.length; i++)
-    if(stock[i]["Adj Close"] > stock[max_idx]["Adj Close"])
-      max_idx = i;
-    
-  for(i = 0; i < stock.length; i++)
-    if(i !== max_idx)
-      stock[i]["Adj Close"] = stock[i]["Adj Close"] / stock[max_idx]["Adj Close"];
-    
-  stock[max_idx]["Adj Close"] = 1;
+  days = [ '' ];
+  stock_data = [null];
+  stock_real = [null];
+  sentiment_data = [null];
   
-
-  // get all the tweets for each day and calculate an avg sentiment
-  for(i = 0; i < stock.length; i++)
+  for(var i = 0; i < app_data["per_day"].length; i++)
   {
-
+    days.push(app_data["per_day"][i]["date"]);
+    stock_data.push(app_data["per_day"][i]["stock_norm"]);
+    stock_real.push(app_data["per_day"][i]["stock_real"]);
+    sentiment_data.push(app_data["per_day"][i]["positivity"]);
   }
+  days.push('');
+  stock_data.push(null);
+  stock_real.push(null);
+  sentiment_data.push(null);
 
-  // var myChart = new Chart(ctx, {
-  //                               responsive: true,
-  //                               type: 'line',
-  //                               data: {
-  //                               labels: months,
-  //                                   datasets: metric_per_year_month,
-  //                                 },
-  //                                 options: {
-  //                                     title: {
-  //                                         display: true,
-  //                                         text: title
-  //                                     },
+  var myChart = new Chart(ctx, {
+                                responsive: true,
+                                type: 'line',
+                                data: {
+                                  labels: days,
+                                    datasets: [
+                                      {
+                                        data: sentiment_data,
+                                        label: "Sentiment",
+                                        borderColor: "#0582CA",
+                                        backgroundColor: "#0582CA",
+                                        borderWidth: 2,
+                                        fillColor: "grey",
+                                        fill: false
+                                      },
+                                      {
+                                        data: stock_data,
+                                        label: "Stock",
+                                        borderColor: "#f38b4a",
+                                        backgroundColor: "#f38b4a",
+                                        borderWidth: 2,
+                                        fill: false
+                                      }
+                                    ]
+                                  },
+                                  options: {
+                                      title: {
+                                          display: true,
+                                          text: "Sentiment vs Stock Price"
+                                      },
                                       
-  //                                     legend: {
-  //                                         position: 'top'
-  //                                     },
-  //                                     tooltips: {
-  //                                       mode: 'label',
-  //                                     },
-  //                                     scales: {
-  //                                       yAxes: [{
-  //                                         ticks: custom_ticks,
-  //                                         scaleLabel: {
-  //                                           display: true,
-  //                                           labelString: yLabel
-  //                                         }
-  //                                       }],
-  //                                       xAxes: [{
-  //                                         scaleLabel: {
-  //                                           display: true,
-  //                                           labelString: xLabel
-  //                                         }
-  //                                       }]
-  //                                     } 
-  //                                 }
-  //                             });
-
-  // var years = [2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017];
-  // var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"]
-              
-  // // Construct the JSON for each year 
-  // jsonData = {};
-  // var metric_months = new Array();
-  // var metric_per_year_month = new Array();
-  // var idx_year = 0;
-  // var idx = 0;
-
-  // colors = ["#f38b4a", "#0582CA", "#963484", "#E5CA1B", "#F8333C", "#3F7D20", "#7B7C7C", "#000000", "#932C2C"]
-
-  // for (i = 1; i < data.length; i++) {
-
-  //   year = String(data[i].split(",")[0]);
-    
-  //   metric_months[idx] = Number(data[i].split(",")[2]);
-
-  //   idx++;
-
-  //   //Switch year - Construct JSON for chart
-  //   if(i%12 == 0 || (year == "2017" && idx == 3)){
-
-  //     jsonData["label"] = year;
-  //     jsonData["data"] = metric_months;
-  //     jsonData["borderColor"] = colors[idx_year];
-  //     jsonData["backgroundColor"] = colors[idx_year];
-  //     jsonData["fill"] = false;
-  //     jsonData["borderWidth"] = 2;
-    
-
-  //     // Hide every line except the first three
-  //     if(year != "2009" && year != "2010" && year != "2011"){
-  //       jsonData["hidden"] = true;
-  //     }
-
-  //     // Change line for the year array and store JSON
-  //     metric_per_year_month[idx_year] = jsonData;
-  //     idx_year++;
-
-  //     // Reset months array and JSON object
-  //     jsonData = {};
-  //     metric_months = [];
-  //     idx = 0;
-  //   }
-  // }
-
-  //   // Handle ticks of ratio
-  // custom_ticks = {};
-
-  // if(filename.includes("conductance") || filename.includes("bridge") || filename.includes("tpr")){    
-  //     custom_ticks["min"] = 0;
-  //     custom_ticks["max"] = 1;
-  // }
-
-  // custom_ticks["beginAtZero"] = true;
+                                      legend: {
+                                          position: 'top'
+                                      },
+                                      tooltips: {
+                                        mode: 'label',
+                                        callbacks: {
+                                            label: function(t, d) {
+                                                if(t.datasetIndex == 0)
+                                                  return "Positivity: " + (t.yLabel.toFixed(2) * 100) + "%";
+                                                else
+                                                  return "Real price: " + stock_real[t.index].toFixed(3) + "$";
+                                            }
+                                        }
+                                      },
+                                      scales: {
+                                        yAxes: [{
+                                          ticks: {
+                                              min: 0,
+                                              max: 1,
+                                              beginAtZero: true
+                                          },
+                                          scaleLabel: {
+                                            display: true
+                                          }
+                                        }],
+                                        xAxes: [{
+                                          scaleLabel: {
+                                            display: true,
+                                            labelString: "Date"
+                                          }
+                                        }]
+                                      } 
+                                  }
+                              });
 }
