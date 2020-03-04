@@ -25,7 +25,7 @@ function sentiment_gauge(ctx, filename){
                                       labels: ["Positive", "Neutral", "Negative"],
                                       datasets: [{
                                           label: "My First dataset",
-                                          backgroundColor: ['#36A2EB', '#FFCD56', '#ff6384'],
+                                          backgroundColor: ['#0582CA', '#f38b4a', '#E15554'],
                                           borderColor: '#fff',
                                           data: aggr_data,
                                       }]
@@ -33,7 +33,7 @@ function sentiment_gauge(ctx, filename){
                                   options: {
                                     title: { 
                                       display: true,
-                                      text: "Overall sentiment for the event"
+                                      text: "Overall sentiment for the event (percentage)"
                                     },
                                     tooltips: {
                                       callbacks: {
@@ -43,10 +43,5 @@ function sentiment_gauge(ctx, filename){
                                       }
                                     }
                                   }
-                                  // options: {
-                                  //     circumference: 1 * Math.PI,
-                                  //     rotation: 1 * Math.PI,
-                                  //     cutoutPercentage: 70
-                                  // }
                               });
 }

@@ -61,8 +61,11 @@
     <div class="container">
       <div class="row">
         <div class="col-md-12 mx-auto">
-          <h2>Heading</h2>
-          <p class="lead" style="text-align: justify;">Some text</p>
+          <h2>Sentiment Analysis</h2>
+          <p style="text-align: justify;"><strong>Left chart (line):</strong> Shows if a correlation between the daily sentiment of tweets and the stock price exists.
+            Both of the datasets are normalized to take values from 0 to 1. The positivity for each day is calculated as follows: <strong>1 * (positive tweets)% + 0.5 * (neutral tweets)% + 0 * (negative tweets)%</strong>. 
+            Hovering on each datapoint reveals the actual rates.</p>
+          <p style="text-align: justify;"><strong>Right chart (doughnut):</strong> Represents the overall sentiment of the tweets expressed as a percentage, regardless of the day.</p>
           <div class="row justify-content-center" style="margin-top:50px;">
             <div class="col-md-6">
               <canvas id="sent_stock" height="250"></canvas>
