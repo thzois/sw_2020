@@ -48,7 +48,7 @@ function world_barchart(ctx, filename) {
                                     tooltips: {
                                         callbacks: {
                                             label: function(tooltipItem) {
-                                                return tooltipItem.xLabel;
+                                                return tooltipItem.xLabel + " Tweets";
                                             }
                                         }
                                     },
