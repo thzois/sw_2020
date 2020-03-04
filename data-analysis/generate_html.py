@@ -23,6 +23,7 @@ def generate_html(events):
     statistics = []
     sentiment_vs_stock_charts = []
     sentiment_gauges = []
+    barcharts = []
     files = []
     
     for i in range(1, len(events['events']) + 1):
@@ -53,8 +54,9 @@ def generate_html(events):
         # statistics - open file for this event
         for event in events["events"]:
             filename = event["start_date"] + "_" + event["end_date"] + ".json"
-            sentiment_vs_stock_charts.append("\t\t\t\t\t\tsentiment_vs_stock(ctx, '" + filename + "');\n")
-            sentiment_gauges.append("\t\t\t\t\t\tsentiment_gauge(ctx, '" + filename + "');\n")
+            sentiment_vs_stock_charts.append("\t\t\tsentiment_vs_stock(ctx, '" + filename + "');\n")
+            sentiment_gauges.append("\t\t\tsentiment_gauge(ctx, '" + filename + "');\n")
+            barcharts.append(f"\t\t\tcreate_bar_chart(ctx, '{filename}');\n")
 
             with open("tweets/results/" + filename, "r") as twitter_file:
                 twitterd = json.load(twitter_file)
@@ -74,7 +76,7 @@ def generate_html(events):
      <div class="row"><br></div>\n \
      <div class="row">\n \
          <div class="col-md-6">\n \
-             <ul id="{event["start_date"]}_{event["end_date"]}" class="list-group-1">\n \
+             <ul class="list-group">\n \
                  <li class="list-group-item active">Data collection information</li>\n \
                  <li class="list-group-item">Event start: <span class="highlight">{event["start_date"]}</span></li>\n \
                  <li class="list-group-item">Event end: &nbsp;<span class="highlight">{event["end_date"]}</span></li>\n \
@@ -111,6 +113,8 @@ def generate_html(events):
                     file.write(sentiment_vs_stock_charts[idx])
                 if '### SWAnalytics SENTIMENT_GAUGE' in line:
                     file.write(sentiment_gauges[idx])
+                if '### SWAnalytics BARCHART' in line:
+                    file.write(barcharts[idx])
                 idx += 1
 
 

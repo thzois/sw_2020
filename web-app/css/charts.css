@@ -10,6 +10,6 @@
 }
 
 .chartAreaWrapper {
-  width: 1300px;
-  overflow-x: scroll;
+  height: 400px;
+  overflow-y: scroll;
 }

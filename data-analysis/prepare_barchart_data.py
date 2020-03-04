@@ -1,4 +1,6 @@
 import json
+from collections import OrderedDict
+from operator import itemgetter
 
 
 def read_events():
@@ -12,18 +14,22 @@ def prepare_barchart_data(events):
         # stock_df.to_csv('../web-app/results/stocks/' + filename, index = False)
         with open(f"tweets/results/{filename}.json", "r") as twitter_file:
             twitter_data = json.load(twitter_file)["tweets"]
-            sentiments_per_country = {}
+            tweets_per_country = {}
             for t in twitter_data:
                 country_name = t['user_location']['name']
-                if sentiments_per_country.get(country_name):
-                    sentiments_per_country[country_name] += 1
+                if tweets_per_country.get(country_name):
+                    tweets_per_country[country_name] += 1
                 else:
-                    sentiments_per_country.update(
+                    tweets_per_country.update(
                         {
                             country_name: 1
                         })
-            with open(f"tweets/results/barchart_{filename}.json", 'w') as outfile:
-                json.dump(sentiments_per_country, outfile, ensure_ascii=True, indent=4)
+
+            sorted_tweets_per_country = OrderedDict(sorted(
+                tweets_per_country.items(), key=itemgetter(1), reverse=True))
+
+            with open(f"../web-app/results/barcharts/{filename}.json", 'w+') as outfile:
+                json.dump(sorted_tweets_per_country, outfile, ensure_ascii=True, indent=4)
 
 
 def main():
