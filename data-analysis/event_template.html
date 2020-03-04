@@ -60,14 +60,13 @@
   <section class="bg-light">
     <div class="container">
       <div class="row">
-        <div class="col-md-12 mx-auto">
-          <h2>Sentiment Analysis</h2>
-          <p style="text-align: justify;"><strong>Left chart (line):</strong> Shows if a correlation between the daily
-            sentiment of tweets and the stock price exists.
-            Both of the datasets are normalized to take values from 0 to 1. The positivity for each day is calculated as
-            follows: <strong>1 * (positive tweets)% + 0.5 * (neutral tweets)% + 0 * (negative tweets)%</strong>.
-            Hovering on each datapoint reveals the actual rates.</p>
-          <p style="text-align: justify;"><strong>Right chart (doughnut):</strong> Represents the overall sentiment of
+        <div class="col-md-12 mx-auto" style="text-align: justify;">
+          <h2>Correlation</h2>
+          <p><strong>Left chart (line):</strong> Compares the trend of stock prices and sentiments for the given period of time. For the <strong>stock price</strong> the daily value considered is 
+            the closing price of the day. Prices are normalized by setting the maximum to 1 and scaling down the others. For <strong>sentiment</strong> the degree of positivity for each day is calculated 
+            as follows: <strong>1 * (positive tweets)% + 0.5 * (neutral tweets)% + 0 * (negative tweets)%</strong>. The obtained values are normalized. <strong>Hovering</strong> on each datapoint reveals the actual rates 
+            for both datasets.</p>
+          <p><strong>Right chart (doughnut):</strong> Represents the overall sentiment of
             the tweets expressed as a percentage, regardless of the day.</p>
           <div class="row justify-content-center" style="margin-top:50px;">
             <div class="col-md-6">
