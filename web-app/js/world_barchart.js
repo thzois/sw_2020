@@ -60,7 +60,7 @@ function world_barchart(ctx, filename) {
                                             },
                                             scaleLabel: {
                                                 display: true,
-                                                labelString: "Countries",
+                                                labelString: "Country",
                                             }
                                         }],
                                         xAxes: [{
