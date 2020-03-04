@@ -1,6 +1,5 @@
 function create_bar_chart(ctx, filename) {
 
-    var sentiments_per_country;
     countries = [];
     number_of_tweets = [];
 
@@ -9,10 +8,15 @@ function create_bar_chart(ctx, filename) {
         async: false,
         dataType: 'json',
         success: function (data) {
-            sentiments_per_country = data;
+            console.log(data);
+            let i = 0;
             for (var country_name in data) {
                 countries.push(country_name);
                 number_of_tweets.push(data[country_name]);
+                i+=1;
+                if (i === 10) {
+                    break
+                }
             }
         },
         error: function () {
@@ -36,7 +40,7 @@ function create_bar_chart(ctx, filename) {
                                 },
                                 options: {
                                     title: {
-                                        display: false,
+                                        display: true,
                                         text: "Number of tweets per country"
                                     },
                                     legend: {
