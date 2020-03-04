@@ -28,11 +28,14 @@ def sentiment_data(events):
         app_data["positive_percentage"] = 0
         app_data["negative_percentage"] = 0
         app_data["neutral_percentage"] = 0
+        app_data["correlation_index"] = 0
         app_data["per_day"] = []
 
         total_neutral = 0
         total_positive = 0
         total_negative = 0
+
+        df_tmp = { "stock_norm": [], "positivity": [] }
 
         # caclulate positivity per day
         with open("tweets/results/" + filename + ".json", "r") as twitter_file:
@@ -82,13 +85,21 @@ def sentiment_data(events):
 
                 # store the data
                 app_data["per_day"].append({ "date": start_dateobj.strftime("%Y-%m-%d"), "positivity": positivity, "stock_norm": stock_price, "stock_real": stock_price_real })
-                
+
+                # correlation index
+                df_tmp["stock_norm"].append(stock_price)
+                df_tmp["positivity"].append(positivity)
+
                 # if the day is the next day of our end_date break
                 start_dateobj = start_dateobj + timedelta(days=1)
                 stock_index += 1
                 aggr_data = False
                 if start_dateobj > end_dateobj:
                     break
+
+            # calculate event correlation index
+            df = pd.DataFrame(data = df_tmp)
+            correlation_index = df["positivity"].corr(df["stock_norm"])
 
             pos_perc = (100*total_positive) / len(twitter_data)
             neg_perc = (100*total_negative) / len(twitter_data)
@@ -97,6 +108,7 @@ def sentiment_data(events):
             app_data["positive_percentage"] = pos_perc
             app_data["negative_percentage"] = neg_perc
             app_data["neutral_percentage"] = neu_perc
+            app_data["correlation_index"] = correlation_index
 
             with open(f"../web-app/results/sentiment/{filename}.json", 'w') as outfile:
                 json.dump(app_data, outfile, ensure_ascii=True, indent=4)

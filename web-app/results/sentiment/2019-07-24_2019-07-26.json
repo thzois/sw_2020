@@ -2,6 +2,7 @@
     "positive_percentage": 0.5128205128205128,
     "negative_percentage": 0.1282051282051282,
     "neutral_percentage": 99.35897435897436,
+    "correlation_index": -0.9745797584450469,
     "per_day": [
         {
             "date": "2019-07-24",

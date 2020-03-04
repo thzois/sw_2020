@@ -34,3 +34,10 @@ section {
 	color:#666;
 	margin-bottom:10px;	
 }
+
+.corr-index {
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	text-align: center;
+}
