@@ -37,7 +37,8 @@
   <!-- Navigation -->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
     <div class="container">
-      <a class="navbar-brand js-scroll-trigger" href="#page-top"><img src="./images/logo_swanalytics.png" style="width:200px;"></a>
+      <a class="navbar-brand js-scroll-trigger" href="#page-top"><img src="./images/logo_swanalytics.png"
+          style="width:200px;"></a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
         aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -48,7 +49,7 @@
     </div>
   </nav>
 
-  
+
   <header>
     <div class="container">
       <!-- ### SWAnalytics STATISTICS ### | DO NOT REMOVE THIS LINE -->
@@ -62,15 +63,18 @@
       <div class="row">
         <div class="col-md-12 mx-auto">
           <h2>Sentiment Analysis</h2>
-          <p style="text-align: justify;"><strong>Left chart (line):</strong> Shows if a correlation between the daily sentiment of tweets and the stock price exists.
-            Both of the datasets are normalized to take values from 0 to 1. The positivity for each day is calculated as follows: <strong>1 * (positive tweets)% + 0.5 * (neutral tweets)% + 0 * (negative tweets)%</strong>. 
+          <p style="text-align: justify;"><strong>Left chart (line):</strong> Shows if a correlation between the daily
+            sentiment of tweets and the stock price exists.
+            Both of the datasets are normalized to take values from 0 to 1. The positivity for each day is calculated as
+            follows: <strong>1 * (positive tweets)% + 0.5 * (neutral tweets)% + 0 * (negative tweets)%</strong>.
             Hovering on each datapoint reveals the actual rates.</p>
-          <p style="text-align: justify;"><strong>Right chart (doughnut):</strong> Represents the overall sentiment of the tweets expressed as a percentage, regardless of the day.</p>
+          <p style="text-align: justify;"><strong>Right chart (doughnut):</strong> Represents the overall sentiment of
+            the tweets expressed as a percentage, regardless of the day.</p>
           <div class="row justify-content-center" style="margin-top:50px;">
             <div class="col-md-6">
               <canvas id="sent_stock" height="250"></canvas>
-            </div>          
-            <div class="col-md-6">  
+            </div>
+            <div class="col-md-6">
               <canvas id="sent_gauge" height="250"></canvas>
             </div>
           </div>
@@ -92,19 +96,20 @@
       <div class="row">
         <div class="col-md-12 mx-auto">
           <h2>Number of tweets per country</h2>
-          <p class="lead" style="text-align: justify;">Here we show the number of tweets that were posted from every country during the event in the form of a barchart as well as heatmap.</p>
+          <p class="lead" style="text-align: justify;">Here we show the number of tweets that were posted from every
+            country during the event in the form of a barchart as well as heatmap.</p>
           <div class="row justify-content-center" style="margin-top:50px;">
-              <div class="col-md-12">
-                  <div class="chartWrapper">
-                      <div class="chartAreaWrapper">
-                          <div class="chartAreaWrapper2">
-                              <canvas id="world_bar" height="500" width="1000"></canvas>
-                          </div>
-                      </div>
-                      <canvas id="axis-world-bar" height="500" width="0"></canvas>
+            <div class="col-md-12">
+              <div class="chartWrapper">
+                <div class="chartAreaWrapper">
+                  <div class="chartAreaWrapper2">
+                    <canvas id="world_bar" height="500" width="1000"></canvas>
+                  </div>
                 </div>
+                <canvas id="axis-world-bar" height="500" width="0"></canvas>
               </div>
-            <div class="col-md-6">  
+            </div>
+            <div class="col-md-6">
               <canvas id="world_map" height="190"></canvas>
             </div>
           </div>
