@@ -1,15 +1,13 @@
-function create_bar_chart(ctx, filename) {
+function world_barchart(ctx, filename) {
 
-    var sentiments_per_country;
     countries = [];
     number_of_tweets = [];
 
     $.ajax({
-        url: 'results/barcharts/' + filename,
+        url: 'results/world/' + filename,
         async: false,
         dataType: 'json',
         success: function (data) {
-            sentiments_per_country = data;
             for (var country_name in data) {
                 countries.push(country_name);
                 number_of_tweets.push(data[country_name]);
