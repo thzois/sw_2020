@@ -62,18 +62,18 @@
       <div class="row">
         <div class="col-md-12 mx-auto" style="text-align: justify;">
           <h2>Correlation</h2>
-          <p><strong>Left (line chart):</strong> Compares the trend of stock prices and sentiments for the given period of time. For the <strong>stock price</strong> the daily value considered is 
+          <p><strong>Line chart:</strong> Compares the trend of stock prices and sentiments for the given period of time. For the <strong>stock price</strong> the daily value considered is 
             the closing price of the day. Prices are normalized by setting the maximum to 1 and scaling down the others. For <strong>sentiment</strong> the degree of positivity for each day is calculated 
             as follows: <strong>1 * (positive tweets)% + 0.5 * (neutral tweets)% + 0 * (negative tweets)%</strong>. The obtained values are normalized. <strong>Hovering</strong> on each datapoint reveals the actual rates 
             for both datasets.</p>
-          <p><strong>Right (correlation index):</strong> Represents the overall sentiment of the tweets expressed as a percentage, regardless of the day.</p>
+          <p><strong>Correlation coefficient:</strong> Shows the statistical relationship between the stock prices and positivity, regardless of the day of the event.</p>
           <div class="row justify-content-center" style="margin-top:50px;">
             <div class="col-md-6">
               <canvas id="sent_stock" height="250"></canvas>
             </div>
             <div class="col-md-6">
               <div class="corr-index">
-                <h3>Correlation Index</h3>
+                <h3>Correlation Coefficient</h3>
                 <p class="lead" id="corridx_value"></p>
               </div>              
             </div>
