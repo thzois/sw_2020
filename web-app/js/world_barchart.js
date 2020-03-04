@@ -1,14 +1,13 @@
-function create_bar_chart(ctx, filename) {
+function world_barchart(ctx, filename) {
 
     countries = [];
     number_of_tweets = [];
 
     $.ajax({
-        url: 'results/barcharts/' + filename,
+        url: 'results/world/' + filename,
         async: false,
         dataType: 'json',
         success: function (data) {
-            console.log(data);
             let i = 0;
             for (var country_name in data) {
                 countries.push(country_name);

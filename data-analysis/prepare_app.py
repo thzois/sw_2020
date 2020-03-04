@@ -16,7 +16,7 @@ def read_events():
 
 
 
-def stock_sent_day_normalized(events):
+def sentiment_data(events):
     for event in events["events"]:
         filename = event["start_date"] + "_" + event["end_date"]
 
@@ -103,7 +103,7 @@ def stock_sent_day_normalized(events):
 
 
 
-def prepare_barchart_data(events):
+def world_data(events):
     for event in events["events"]:
         filename = event["start_date"] + "_" + event["end_date"]
         with open(f"tweets/results/{filename}.json", "r") as twitter_file:
@@ -121,15 +121,15 @@ def prepare_barchart_data(events):
             sorted_tweets_per_country = OrderedDict(
                 sorted(tweets_per_country.items(), key=itemgetter(1), reverse=True))
 
-            with open(f"../web-app/results/barcharts/{filename}.json", 'w') as outfile:
+            with open(f"../web-app/results/world/{filename}.json", 'w') as outfile:
                 json.dump(sorted_tweets_per_country, outfile, ensure_ascii=True, indent=4)
 
 
 
 def main():
     events = read_events()
-    stock_sent_day_normalized(events)
-    prepare_barchart_data(events)
+    sentiment_data(events)
+    world_data(events)
 
 
 
