@@ -121,7 +121,7 @@ def prepare_barchart_data(events):
             sorted_tweets_per_country = OrderedDict(
                 sorted(tweets_per_country.items(), key=itemgetter(1), reverse=True))
 
-            with open(f"tweets/results/barchart_{filename}.json", 'w') as outfile:
+            with open(f"tweets/results/barcharts/{filename}.json", 'w') as outfile:
                 json.dump(sorted_tweets_per_country, outfile, ensure_ascii=True, indent=4)
 
 
