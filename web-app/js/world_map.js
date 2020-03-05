@@ -1,6 +1,5 @@
-let countries_data;
-
 function generate_world_map(filename) {
+    let countries_data;
 
     $.ajax({
         url: 'results/world/' + filename,
@@ -21,7 +20,8 @@ function generate_world_map(filename) {
     // Themes end
 
     var chart = am4core.create("world_map", am4maps.MapChart);
-
+    chart.seriesContainer.draggable = false;
+    chart.seriesContainer.resizable = false;
 
     try {
         chart.geodata = am4geodata_worldHigh;
