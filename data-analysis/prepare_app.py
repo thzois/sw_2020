@@ -55,27 +55,19 @@ def sentiment_data(events):
                 for t in twitter_data:
                     t_date = datetime.strptime(t["created_at"].split(" ")[0], '%Y-%m-%d').date()
                     if (t["pos"] > t["neu"]) and (t["pos"] > t["neg"]):
-                        if aggr_data:
-                            total_positive += 1
-                        if t_date == start_dateobj:
-                            day_pos += 1
+                        if aggr_data: total_positive += 1
+                        if t_date == start_dateobj: day_pos += 1
 
                     elif (t["neu"] > t["pos"]) and (t["neu"] > t["neg"]):
-                        if aggr_data:
-                            total_neutral += 1
-                        if t_date == start_dateobj:
-                            day_neu += 1
+                        if aggr_data: total_neutral += 1
+                        if t_date == start_dateobj: day_neu += 1
 
                     elif t["neu"] == t["pos"]:
-                        if aggr_data:
-                            total_neutral += 1
-                        if t_date == start_dateobj:
-                            day_neu += 1
+                        if aggr_data: total_neutral += 1
+                        if t_date == start_dateobj: day_neu += 1
                     else:
-                        if aggr_data:
-                            total_negative += 1
-                        if t_date == start_dateobj:
-                            day_neg += 1
+                        if aggr_data: total_negative += 1
+                        if t_date == start_dateobj: day_neg += 1
                 
 
                 # convert to percentages - per day
