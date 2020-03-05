@@ -170,7 +170,7 @@ def world_data(events):
 
 def main():
     events = read_events()
-    # sentiment_data(events)
+    sentiment_data(events)
     world_data(events)
 
 
