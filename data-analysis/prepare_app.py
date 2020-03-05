@@ -1,7 +1,7 @@
 from collections import OrderedDict
 from operator import itemgetter
 
-import pandas as pd
+# import pandas as pd
 from datetime import datetime
 from datetime import timedelta
 import json
@@ -52,19 +52,27 @@ def sentiment_data(events):
                 for t in twitter_data:
                     t_date = datetime.strptime(t["created_at"].split(" ")[0], '%Y-%m-%d').date()
                     if (t["pos"] > t["neu"]) and (t["pos"] > t["neg"]):
-                        if aggr_data: total_positive += 1
-                        if t_date == start_dateobj: day_pos += 1
+                        if aggr_data:
+                            total_positive += 1
+                        if t_date == start_dateobj:
+                            day_pos += 1
 
                     elif (t["neu"] > t["pos"]) and (t["neu"] > t["neg"]):
-                        if aggr_data: total_neutral += 1
-                        if t_date == start_dateobj: day_neu += 1
+                        if aggr_data:
+                            total_neutral += 1
+                        if t_date == start_dateobj:
+                            day_neu += 1
 
                     elif t["neu"] == t["pos"]:
-                        if aggr_data: total_neutral += 1
-                        if t_date == start_dateobj: day_neu += 1
+                        if aggr_data:
+                            total_neutral += 1
+                        if t_date == start_dateobj:
+                            day_neu += 1
                     else:
-                        if aggr_data: total_negative += 1
-                        if t_date == start_dateobj: day_neg += 1
+                        if aggr_data:
+                            total_negative += 1
+                        if t_date == start_dateobj:
+                            day_neg += 1
                 
 
                 # convert to percentages - per day
@@ -102,7 +110,6 @@ def sentiment_data(events):
                 json.dump(app_data, outfile, ensure_ascii=True, indent=4)
 
 
-
 def world_data(events):
     for event in events["events"]:
         filename = event["start_date"] + "_" + event["end_date"]
@@ -112,23 +119,46 @@ def world_data(events):
             for t in twitter_data:
                 country_name = t['user_location']['name']
                 if tweets_per_country.get(country_name):
-                    tweets_per_country[country_name] += 1
+                    tweets_per_country[country_name]['tweets_count'] += 1
+                    tweets_per_country[country_name]['positive_tweets_count'] += 1 if (t['pos'] > t['neu'] and t['pos'] > t['neg']) else 0
+                    tweets_per_country[country_name]['neutral_tweets_count'] += 1 if (t['neu'] >= t['pos'] and t['neu'] >= t['neg']) else 0
+                    tweets_per_country[country_name]['negative_tweets_count'] += 1 if (t['neg'] > t['neu'] and t['neg'] > t['pos']) else 0
                 else:
                     tweets_per_country.update(
                         {
-                            country_name: 1
-                        })
-            sorted_tweets_per_country = OrderedDict(
-                sorted(tweets_per_country.items(), key=itemgetter(1), reverse=True))
+                            country_name: {
+                                'id': t['user_location']['alpha_2'],
+                                'name': country_name,
+                                'tweets_count': 1,
+                                'positive_tweets_count': 1 if (t['pos'] > t['neu'] and t['pos'] > t['neg']) else 0,
+                                'neutral_tweets_count': 1 if (t['neu'] >= t['pos'] and t['neu'] >= t['neg']) else 0,
+                                'negative_tweets_count': 1 if (t['neg'] > t['neu'] and t['neg'] > t['pos']) else 0
+                            }
+                        }
+                    )
+
+            for country_name, country_vals in tweets_per_country.items():
+                positive_percentage = 100 * country_vals['positive_tweets_count'] / country_vals['tweets_count']
+                neutral_percentage = 100 * country_vals['neutral_tweets_count'] / country_vals['tweets_count']
+                negative_percentage = 100 * country_vals['negative_tweets_count'] / country_vals['tweets_count']
+
+                positivity = (positive_percentage * 1.0) + (neutral_percentage * 0.5) + (negative_percentage * 0)
+
+                country_vals['positive_percentage'] = positive_percentage
+                country_vals['neutral_percentage'] = neutral_percentage
+                country_vals['negative_percentage'] = negative_percentage
+                country_vals['positivity'] = positivity
+
+            tweets_per_country_final = []
+            for country, country_data in tweets_per_country.items():
+                tweets_per_country_final.append(country_data)
 
             with open(f"../web-app/results/world/{filename}.json", 'w') as outfile:
-                json.dump(sorted_tweets_per_country, outfile, ensure_ascii=True, indent=4)
-
-
+                json.dump(tweets_per_country_final, outfile, ensure_ascii=True, indent=4)
 
 def main():
     events = read_events()
-    sentiment_data(events)
+    # sentiment_data(events)
     world_data(events)
 
 

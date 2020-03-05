@@ -23,7 +23,7 @@ def generate_html(events):
     statistics = []
     sentiment_vs_stock_charts = []
     sentiment_gauges = []
-    world_barcharts = []
+    world_maps = []
     files = []
     
     for i in range(1, len(events['events']) + 1):
@@ -56,7 +56,7 @@ def generate_html(events):
             filename = event["start_date"] + "_" + event["end_date"] + ".json"
             sentiment_vs_stock_charts.append("\t\t\t\t\t\tsentiment_vs_stock(ctx, '" + filename + "');\n")
             sentiment_gauges.append("\t\t\t\t\t\tsentiment_gauge(ctx, '" + filename + "');\n")
-            world_barcharts.append(f"\t\t\t\t\t\tworld_barchart(ctx, '{filename}');\n")
+            world_maps.append(f"\t\t\t\t\t\tgenerate_world_map('{filename}');\n")
 
             with open("tweets/results/" + filename, "r") as twitter_file:
                 twitterd = json.load(twitter_file)
@@ -113,8 +113,8 @@ def generate_html(events):
                     file.write(sentiment_vs_stock_charts[idx])
                 if '### SWAnalytics SENTIMENT_GAUGE' in line:
                     file.write(sentiment_gauges[idx])
-                if '### SWAnalytics WORLD_BARCHART' in line:
-                    file.write(world_barcharts[idx])
+                if '### SWAnalytics WORLD_MAP' in line:
+                    file.write(world_maps[idx])
                 idx += 1
 
 

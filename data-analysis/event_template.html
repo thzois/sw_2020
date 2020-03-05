@@ -24,11 +24,17 @@
   <!-- jQuery include -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
+  <script src="https://www.amcharts.com/lib/4/core.js"></script>
+  <script src="https://www.amcharts.com/lib/4/charts.js"></script>
+  <script src="https://www.amcharts.com/lib/4/maps.js"></script>
+  <script src="https://www.amcharts.com/lib/4/geodata/worldHigh.js"></script>
+  <script src="https://www.amcharts.com/lib/4/themes/animated.js"></script>
+
   <!-- Size of graph charts -->
   <script src="js/jquery-csv.js"></script>
   <script src="js/sent_vs_stock_chart.js"></script>
   <script src="js/sentiment_gauge_chart.js"></script>
-  <script src="js/world_barchart.js"></script>
+  <script src="js/world_map.js"></script>
 
 </head>
 
@@ -99,18 +105,12 @@
           <p style="text-align: justify;">Here we show the number of tweets that were posted from every
             country during the event in the form of a barchart as well as heatmap.</p>
           <div class="row justify-content-center" style="margin-top:50px;">
-              <div class="col-md-6">
-                  <canvas id="world_bar"></canvas>
-              </div>
-              <div class="col-md-6">
-                <canvas id="world_map" height="190"></canvas>
+              <div class="col-md-12">
+                <div id="world_map" height="190"></div>
               </div>
           </div>
           <script>
-            var ctx = $('#world_bar');
-            // ### SWAnalytics WORLD_BARCHART ### | DO NOT REMOVE THIS LINE
-
-            // ### SWAnalytics CHART_4 ### | DO NOT REMOVE THIS LINE
+            // ### SWAnalytics WORLD_MAP ### | DO NOT REMOVE THIS LINE
           </script>
         </div>
       </div>

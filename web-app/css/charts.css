@@ -1,15 +1,4 @@
-.chartWrapper {
-  position: relative;
-}
-
-.chartWrapper > canvas {
-  position: absolute;
-  left: 0;
-  top: 0;
-  pointer-events: none;
-}
-
-.chartAreaWrapper {
-  height: 400px;
-  overflow-y: scroll;
+#world_map {
+  width: 100%;
+  height: 500px;
 }
