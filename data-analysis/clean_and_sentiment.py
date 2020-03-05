@@ -63,6 +63,7 @@ def clean_and_sentiment(events):
                                     )
                                 )
                         except:
+                            total_tweets_loc_undesc += 1
                             continue
 
                         tweet = {

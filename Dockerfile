@@ -7,6 +7,7 @@ RUN pip install --no-cache-dir git+https://github.com/tweepy/tweepy@premium-sear
 RUN pip install --no-cache-dir pandas-datareader
 RUN pip install --no-cache-dir pandas
 RUN pip install --no-cache-dir pycountry
+RUN pip install --no-cache-dir pycountry_convert
 
 # copy files
 COPY data-analysis /data-analysis
