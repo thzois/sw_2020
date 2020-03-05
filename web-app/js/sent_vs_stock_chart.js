@@ -14,6 +14,8 @@ function sentiment_vs_stock(ctx, filename){
     }
   });
 
+  $("#corridx_value").text(app_data['correlation_index'].toFixed(5));
+
   days = [ '' ];
   stock_data = [null];
   stock_real = [null];

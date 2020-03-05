@@ -67,8 +67,6 @@ function generate_world_map(filename) {
 
     // what to do when country is clicked
     polygonTemplate.events.on("hit", function (event) {
-        console.log("Poligon template");
-        console.log(event.target.properties);
         event.target.zIndex = 1000000;
         selectPolygon(event.target);
     });
