@@ -1,7 +1,8 @@
+import pycountry_convert
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
-
 from datetime import datetime
 import pycountry
+import pycountry_convert
 import json
 import re
 
@@ -54,6 +55,16 @@ def clean_and_sentiment(events):
                         if not country:
                             total_tweets_loc_undesc += 1
                     if country:
+                        try:
+                            continent = \
+                                pycountry_convert.convert_continent_code_to_continent_name(
+                                    pycountry_convert.country_alpha2_to_continent_code(
+                                        country[0]
+                                    )
+                                )
+                        except:
+                            continue
+
                         tweet = {
                             "created_at": datetime.strptime(t["created_at"], "%a %b %d %H:%M:%S %z %Y").strftime("%Y-%m-%d %H:%M:%S"),
                             "created_at_original": t["created_at"],
@@ -63,7 +74,8 @@ def clean_and_sentiment(events):
                                 'alpha_3': country[0].alpha_3,
                                 'name': country[0].name,
                                 'numeric': country[0].numeric,
-                                'official_name': country[0].official_name if hasattr(country[0],'official_name') else None
+                                'official_name': country[0].official_name if hasattr(country[0],'official_name') else None,
+                                'continent': continent
                             },
                             "user_followers": t["user"]["followers_count"]
                         }

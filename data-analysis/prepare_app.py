@@ -1,7 +1,7 @@
 from collections import OrderedDict
 from operator import itemgetter
 
-import pandas as pd
+# import pandas as pd
 from datetime import datetime
 from datetime import timedelta
 import json
@@ -219,20 +219,19 @@ def world_data(events):
         filename = event["start_date"] + "_" + event["end_date"]
         with open(f"tweets/results/{filename}.json", "r") as twitter_file:
             twitter_data = json.load(twitter_file)["tweets"]
-            tweets_per_country = {}
+            tweets_per_continent = {}
             for t in twitter_data:
-                country_name = t['user_location']['name']
-                if tweets_per_country.get(country_name):
-                    tweets_per_country[country_name]['tweets_count'] += 1
-                    tweets_per_country[country_name]['positive_tweets_count'] += 1 if (t['pos'] > t['neu'] and t['pos'] > t['neg']) else 0
-                    tweets_per_country[country_name]['neutral_tweets_count'] += 1 if (t['neu'] >= t['pos'] and t['neu'] >= t['neg']) else 0
-                    tweets_per_country[country_name]['negative_tweets_count'] += 1 if (t['neg'] > t['neu'] and t['neg'] > t['pos']) else 0
+                continent = t['user_location']['continent']
+                if tweets_per_continent.get(continent):
+                    tweets_per_continent[continent]['tweets_count'] += 1
+                    tweets_per_continent[continent]['positive_tweets_count'] += 1 if (t['pos'] > t['neu'] and t['pos'] > t['neg']) else 0
+                    tweets_per_continent[continent]['neutral_tweets_count'] += 1 if (t['neu'] >= t['pos'] and t['neu'] >= t['neg']) else 0
+                    tweets_per_continent[continent]['negative_tweets_count'] += 1 if (t['neg'] > t['neu'] and t['neg'] > t['pos']) else 0
                 else:
-                    tweets_per_country.update(
+                    tweets_per_continent.update(
                         {
-                            country_name: {
-                                'id': t['user_location']['alpha_2'],
-                                'name': country_name,
+                            continent: {
+                                'name': continent,
                                 'tweets_count': 1,
                                 'positive_tweets_count': 1 if (t['pos'] > t['neu'] and t['pos'] > t['neg']) else 0,
                                 'neutral_tweets_count': 1 if (t['neu'] >= t['pos'] and t['neu'] >= t['neg']) else 0,
@@ -241,30 +240,30 @@ def world_data(events):
                         }
                     )
 
-            for country_name, country_vals in tweets_per_country.items():
-                positive_percentage = 100 * country_vals['positive_tweets_count'] / country_vals['tweets_count']
-                neutral_percentage = 100 * country_vals['neutral_tweets_count'] / country_vals['tweets_count']
-                negative_percentage = 100 * country_vals['negative_tweets_count'] / country_vals['tweets_count']
+            for continent_name, continent_vals in tweets_per_continent.items():
+                positive_percentage = 100 * continent_vals['positive_tweets_count'] / continent_vals['tweets_count']
+                neutral_percentage = 100 * continent_vals['neutral_tweets_count'] / continent_vals['tweets_count']
+                negative_percentage = 100 * continent_vals['negative_tweets_count'] / continent_vals['tweets_count']
 
                 positivity = (positive_percentage * 1.0) + (neutral_percentage * 0.5) + (negative_percentage * 0)
 
-                country_vals['positive_percentage'] = positive_percentage
-                country_vals['neutral_percentage'] = neutral_percentage
-                country_vals['negative_percentage'] = negative_percentage
-                country_vals['positivity'] = positivity
+                continent_vals['positive_percentage'] = positive_percentage
+                continent_vals['neutral_percentage'] = neutral_percentage
+                continent_vals['negative_percentage'] = negative_percentage
+                continent_vals['positivity'] = positivity
 
-            tweets_per_country_final = []
-            for country, country_data in tweets_per_country.items():
-                tweets_per_country_final.append(country_data)
+            tweets_per_continent_final = []
+            for continent, continent_data in tweets_per_continent.items():
+                tweets_per_continent_final.append(continent_data)
 
             with open(f"../web-app/results/world/{filename}.json", 'w') as outfile:
-                json.dump(tweets_per_country_final, outfile, ensure_ascii=True, indent=4)
+                json.dump(tweets_per_continent_final, outfile, ensure_ascii=True, indent=4)
 
 
 def main():
     events = read_events()
-    sentiment_data(events)
-    world_data(events)
+    # sentiment_data(events)
+    # world_data(events)
     generate_html(events)
 
 
