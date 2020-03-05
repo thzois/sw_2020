@@ -16,15 +16,6 @@ def read_events():
         return json.load(read_file)
 
 
-def remove_old_html_files():
-    file_list = glob.glob('../web-app/event*.html') 
-    for file_path in file_list:
-        try:
-            os.remove(file_path)
-        except:
-            print("Error while deleting file : ", file_path)
-
-
 def generate_html(events):
     navbars = []
     statistics = []
@@ -274,7 +265,6 @@ def main():
     events = read_events()
     sentiment_data(events)
     world_data(events)
-    remove_old_html_files()
     generate_html(events)
 
 
