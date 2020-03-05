@@ -59,7 +59,7 @@ def clean_and_sentiment(events):
                             continent = \
                                 pycountry_convert.convert_continent_code_to_continent_name(
                                     pycountry_convert.country_alpha2_to_continent_code(
-                                        country[0]
+                                        country[0].alpha_2
                                     )
                                 )
                         except:
