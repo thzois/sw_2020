@@ -111,7 +111,7 @@ def generate_html(events):
                     file.write(sentiment_vs_stock_charts[idx])
                 if '### SWAnalytics SENTIMENT_GAUGE' in line:
                     file.write(sentiment_gauges[idx])
-                if '### SWAnalytics WORLD_MAP' in line:
+                if '### SWAnalytics WORLD_SENTIMENT_MAP' in line:
                     file.write(world_maps[idx])
                 idx += 1
 
@@ -250,7 +250,6 @@ def world_data(events):
                 continent_vals['positive_percentage'] = positive_percentage
                 continent_vals['neutral_percentage'] = neutral_percentage
                 continent_vals['negative_percentage'] = negative_percentage
-                continent_vals['positivity'] = positivity
 
             tweets_per_continent_final = []
             for continent, continent_data in tweets_per_continent.items():
@@ -262,8 +261,8 @@ def world_data(events):
 
 def main():
     events = read_events()
-    # sentiment_data(events)
-    # world_data(events)
+    sentiment_data(events)
+    world_data(events)
     generate_html(events)
 
 

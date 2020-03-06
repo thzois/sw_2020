@@ -37,12 +37,12 @@ section {
 
 .corr-index {
 	position: absolute;
-	left: 50%;
+	left: 25%;
 	top: 50%;
 	text-align: center;
 }
 
 #world_map {
 	width: 100%;
-	height: 500px;
+	height: 450px;
 }
