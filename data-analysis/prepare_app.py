@@ -9,7 +9,7 @@ import glob
 import csv
 import sys
 import os
-
+from topic_analysis_methods import get_model_out, save_json, get_topic_data
 
 def read_events():
     with open("events.json", "r") as read_file:
@@ -22,8 +22,9 @@ def generate_html(events):
     sentiment_vs_stock_charts = []
     sentiment_gauges = []
     world_maps = []
+    topic_analyses = []
     files = []
-    
+
     for i in range(1, len(events['events']) + 1):
         # navbar
         nav = ''
@@ -51,11 +52,12 @@ def generate_html(events):
 
         # statistics - open file for this event
         for event in events["events"]:
-            filename = event["start_date"] + "_" + event["end_date"] + ".json"
+            event_name = event["start_date"] + "_" + event["end_date"]
+            filename = f'{event_name}.json'
             sentiment_vs_stock_charts.append("\t\t\t\t\t\tsentiment_vs_stock(ctx, '" + filename + "');\n")
             sentiment_gauges.append("\t\t\t\t\t\tsentiment_gauge(ctx, '" + filename + "');\n")
             world_maps.append(f"\t\t\t\t\t\tgenerate_world_map('{filename}');\n")
-
+            topic_analyses.append(f'$("#topicAnalysis").load("results/topic_analysis/pyLDAvis_{event_name}.html");\n')
             with open("tweets/results/" + filename, "r") as twitter_file:
                 twitterd = json.load(twitter_file)
                 hashtags = ''
@@ -113,6 +115,8 @@ def generate_html(events):
                     file.write(sentiment_gauges[idx])
                 if '### SWAnalytics WORLD_SENTIMENT_MAP' in line:
                     file.write(world_maps[idx])
+                if '### SWAnalytics TOPIC_ANALYSIS' in line:
+                    file.write(topic_analyses[idx])
                 idx += 1
 
 
@@ -245,8 +249,6 @@ def world_data(events):
                 neutral_percentage = 100 * continent_vals['neutral_tweets_count'] / continent_vals['tweets_count']
                 negative_percentage = 100 * continent_vals['negative_tweets_count'] / continent_vals['tweets_count']
 
-                positivity = (positive_percentage * 1.0) + (neutral_percentage * 0.5) + (negative_percentage * 0)
-
                 continent_vals['positive_percentage'] = positive_percentage
                 continent_vals['neutral_percentage'] = neutral_percentage
                 continent_vals['negative_percentage'] = negative_percentage
@@ -259,10 +261,21 @@ def world_data(events):
                 json.dump(tweets_per_continent_final, outfile, ensure_ascii=True, indent=4)
 
 
+def topic_analysis(events):
+
+    for event in events["events"]:
+        dict_df = get_topic_data(event)
+
+        # change num_topics to some value (11) for a fast run, else None
+        get_model_out(dict_df=dict_df, num_topics=11, limit=35, start=8, step=5,
+                      show_num_topics=-1, word_map=False, random_state=100)
+
+
 def main():
     events = read_events()
-    sentiment_data(events)
-    world_data(events)
+    # sentiment_data(events)
+    # world_data(events)
+    topic_analysis(events)
     generate_html(events)
 
 
