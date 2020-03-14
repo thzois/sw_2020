@@ -16,14 +16,9 @@ import spacy  # lemmatization
 import json
 import re
 
-try:
-    stop_words = stopwords.words('english')
-except:
-    import nltk
-    nltk.download('stopwords')
-    stop_words = stopwords.words('english')
 
 # define stop_words:
+stop_words = stopwords.words('english')
 stop_words.remove("down")
 stop_words.remove("up")
 stop_words.remove("against")

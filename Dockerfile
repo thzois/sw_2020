@@ -19,6 +19,7 @@ RUN apt update && apt-get install -y libenchant-dev
 
 # copy files
 COPY data-analysis /data-analysis
+COPY data-analysis/nltk_data /usr/local/share/nltk_data
 COPY web-app /web-app
 WORKDIR /data-analysis
 
