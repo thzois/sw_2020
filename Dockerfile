@@ -1,4 +1,4 @@
-FROM python:3.7.6
+FROM python:3.7.7
 
 # install requirements
 RUN pip install --no-cache-dir vaderSentiment
@@ -13,6 +13,7 @@ RUN pip install --no-cache-dir gensim
 RUN pip install --no-cache-dir nltk
 RUN pip install --no-cache-dir pyLDAvis
 RUN pip install --no-cache-dir spacy
+RUN pip install --no-cache-dir sklearn
 RUN python -m spacy download en
 RUN pip install --no-cache-dir pyenchant
 RUN apt update && apt-get install -y libenchant-dev 
