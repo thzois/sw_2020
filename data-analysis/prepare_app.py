@@ -273,8 +273,8 @@ def topic_analysis(events):
 
 def main():
     events = read_events()
-    # sentiment_data(events)
-    # world_data(events)
+    sentiment_data(events)
+    world_data(events)
     topic_analysis(events)
     generate_html(events)
 
