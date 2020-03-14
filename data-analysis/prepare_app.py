@@ -1,15 +1,16 @@
+from topic_analysis_methods import get_model_out, get_topic_data
 from collections import OrderedDict
 from operator import itemgetter
-
-import pandas as pd
-from datetime import datetime
 from datetime import timedelta
+from datetime import datetime
+ 
+import pandas as pd
 import json
 import glob
 import csv
 import sys
 import os
-from topic_analysis_methods import get_model_out, save_json, get_topic_data
+
 
 def read_events():
     with open("events.json", "r") as read_file:
@@ -58,6 +59,7 @@ def generate_html(events):
             sentiment_gauges.append("\t\t\t\t\t\tsentiment_gauge(ctx, '" + filename + "');\n")
             world_maps.append(f"\t\t\t\t\t\tgenerate_world_map('{filename}');\n")
             topic_analyses.append(f'$("#topicAnalysis").load("results/topic_analysis/pyLDAvis_{event_name}.html");\n')
+            
             with open("tweets/results/" + filename, "r") as twitter_file:
                 twitterd = json.load(twitter_file)
                 hashtags = ''
@@ -262,7 +264,6 @@ def world_data(events):
 
 
 def topic_analysis(events):
-
     for event in events["events"]:
         dict_df = get_topic_data(event)
 

@@ -1,26 +1,29 @@
-import enchant  # vocabulary to process words stuck together
-import gensim
-import pyLDAvis as pyLDAvis
+from nltk.tokenize.treebank import TreebankWordDetokenizer
 from pyLDAvis import gensim as gensim_pyLDAvis
-from gensim import corpora
 from gensim.utils import simple_preprocess
 from gensim.models import CoherenceModel
-# nltk.download('stopwords')
-
-from textblob import TextBlob, Word
 from nltk.tokenize import TweetTokenizer
-from nltk.tokenize.treebank import TreebankWordDetokenizer
+from textblob import TextBlob, Word
 from nltk.corpus import stopwords
+from gensim import corpora
 
-import spacy  # lemmatization
-import re
-import string
+import pyLDAvis as pyLDAvis
 import itertools
+import enchant  # vocabulary to process words stuck together
+import gensim
+import string
+import spacy  # lemmatization
 import json
+import re
 
+try:
+    stop_words = stopwords.words('english')
+except:
+    import nltk
+    nltk.download('stopwords')
+    stop_words = stopwords.words('english')
 
 # define stop_words:
-stop_words = stopwords.words('english')
 stop_words.remove("down")
 stop_words.remove("up")
 stop_words.remove("against")
@@ -28,7 +31,6 @@ stop_words.extend(['from', 'subject', 're', 'edu', 'use', 'via', "tsla", "tesla"
                    "nos"])  # add Tesla because it doesnt add any value to the topic analysis.
 
 # Initialize spacy 'en' model, keeping only tagger component (for efficiency)
-# Run in terminal: python3 -m spacy download en
 nlp = spacy.load('en', disable=['parser', 'ner'])
 
 # make a function to process words stuck together
@@ -42,11 +44,6 @@ eng_dict = enchant.Dict("en_US")
 for i in list_exclude:
     eng_dict.add(i)
 eng_dict.add("electriic")
-
-
-def save_json(obj, name):
-    with open(name + '.json', 'w') as fp:
-        json.dump(obj, fp)
 
 
 def remove_ends(text):
@@ -113,7 +110,6 @@ def segment_string(chars, exclude=None):
 
 
 def get_dict_data(event):
-
     dict_df = {}  # a dict to store all the text-tweets across multiple keys(event dates)
 
     filename = event["start_date"] + "_" + event["end_date"]
@@ -144,7 +140,6 @@ def get_dict_data(event):
 
 
 def get_topic_data(event):
-
     dict_df = get_dict_data(event)
     for key in dict_df.keys():
         dict_df[key] = [
@@ -157,7 +152,6 @@ def get_topic_data(event):
                                                       'ADV'])  # takes some time
         dict_df.update({key: [[str(TextBlob(word).correct()) for word in sent] for sent in dict_df[key]]})
 
-    # save_json(dict_df, "dict_df")
     return dict_df
 
 
@@ -178,49 +172,46 @@ def model_config(corpus, dictionary, num_topics=10, random_state=100):
 def get_model_out(dict_df, num_topics=None, limit=31, start=2, step=3,
                   show_num_topics=-1, word_map=False,
                   random_state=100):
-
-    result = '3D'
     num_words = 6
 
-    if str(result) == '3D':
-        for key in dict_df.keys():
-            # intermediary:
-            c_v = []  # saves coherence scores
-            model_list = []  # saves models
-            topic_weights = []  # for extracting dominant topic
-            tokenized_corpus = dict_df[key]
-            id2word = corpora.Dictionary(tokenized_corpus)
-            corpus = [id2word.doc2bow(text) for text in tokenized_corpus]
-            # run model
-            if num_topics:
-                for topic in range(start, limit, step):
-                    model = model_config(corpus=corpus, dictionary=id2word,
-                                         num_topics=topic,
-                                         random_state=random_state)
-                    model_list.append(model)
-                    cm = CoherenceModel(model=model, texts=tokenized_corpus,
-                                        dictionary=id2word, coherence='c_v')
-                    c_v.append(cm.get_coherence())
-
-            else:
+    for key in dict_df.keys():
+        # intermediary:
+        c_v = []  # saves coherence scores
+        model_list = []  # saves models
+        topic_weights = []  # for extracting dominant topic
+        tokenized_corpus = dict_df[key]
+        id2word = corpora.Dictionary(tokenized_corpus)
+        corpus = [id2word.doc2bow(text) for text in tokenized_corpus]
+        # run model
+        if num_topics:
+            for topic in range(start, limit, step):
                 model = model_config(corpus=corpus, dictionary=id2word,
-                                     num_topics=num_topics,
-                                     random_state=random_state)
+                                        num_topics=topic,
+                                        random_state=random_state)
                 model_list.append(model)
                 cm = CoherenceModel(model=model, texts=tokenized_corpus,
                                     dictionary=id2word, coherence='c_v')
                 c_v.append(cm.get_coherence())
 
-            model = model_list[c_v.index(max(c_v))]
-            model_topics = model.show_topics(num_words=num_words, formatted=False,
-                                             num_topics=show_num_topics)
-            topics = {}
-            for j in [i[0] for i in model_topics]:
-                topics[j] = dict(model_topics[j][1])
-            # TSNE:
+        else:
+            model = model_config(corpus=corpus, dictionary=id2word,
+                                    num_topics=num_topics,
+                                    random_state=random_state)
+            model_list.append(model)
+            cm = CoherenceModel(model=model, texts=tokenized_corpus,
+                                dictionary=id2word, coherence='c_v')
+            c_v.append(cm.get_coherence())
 
-            for i, row_list in enumerate(model[corpus]):
-                topic_weights.append([w for i, w in row_list[0]])
+        model = model_list[c_v.index(max(c_v))]
+        model_topics = model.show_topics(num_words=num_words, formatted=False,
+                                            num_topics=show_num_topics)
+        topics = {}
+        for j in [i[0] for i in model_topics]:
+            topics[j] = dict(model_topics[j][1])
+        # TSNE:
 
-            panel = gensim_pyLDAvis.prepare(model, corpus, id2word, mds='tsne')  #
-            pyLDAvis.save_html(panel, f'../web-app/results/topic_analysis/pyLDAvis_{key}.html')
+        for i, row_list in enumerate(model[corpus]):
+            topic_weights.append([w for i, w in row_list[0]])
+
+        panel = gensim_pyLDAvis.prepare(model, corpus, id2word, mds='tsne')  #
+        pyLDAvis.save_html(panel, f'../web-app/results/topic_analysis/pyLDAvis_{key}.html')
