@@ -1,16 +1,14 @@
-from dotenv import load_dotenv
-load_dotenv()
-
 from pandas_datareader.data import DataReader
 from datetime import datetime
 from datetime import timedelta
+from dotenv import load_dotenv
+load_dotenv()
 from ast import literal_eval
 
 import tweepy
 import json
 import os
 import time
-
 
 
 # read events.json 

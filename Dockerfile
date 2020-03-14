@@ -8,6 +8,13 @@ RUN pip install --no-cache-dir pandas-datareader
 RUN pip install --no-cache-dir pandas
 RUN pip install --no-cache-dir pycountry
 RUN pip install --no-cache-dir pycountry_convert
+RUN pip install --no-cache-dir textblob
+RUN pip install --no-cache-dir gensim
+RUN pip install --no-cache-dir nltk
+RUN pip install --no-cache-dir pyLDAvis
+RUN pip install --no-cache-dir pyenchant
+RUN pip install --no-cache-dir spacy
+RUN apt update && apt-get install -y libenchant-dev 
 
 # copy files
 COPY data-analysis /data-analysis

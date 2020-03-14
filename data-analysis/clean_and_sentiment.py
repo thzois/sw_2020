@@ -1,11 +1,10 @@
-import pycountry_convert
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 from datetime import datetime
-import pycountry
+
 import pycountry_convert
+import pycountry
 import json
 import re
-
 
 
 # read events.json 

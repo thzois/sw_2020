@@ -102,8 +102,6 @@ function generate_world_map(filename) {
       }
     });
 
-    console.log(pieSeries);
-    
     pieChartTemplate.propertyFields.width = "width";
     pieChartTemplate.propertyFields.height = "height";
     pieChartTemplate.horizontalCenter = "middle";
@@ -116,8 +114,6 @@ function generate_world_map(filename) {
     pieSeriesTemplate.slices.template.stroke = am4core.color("#fff");
     pieSeriesTemplate.slices.fill = am4core.color("#e3e3e3");
 
-    console.log(pieSeriesTemplate.dataFields);
-    
     pieSeriesTemplate.dataFields.category = "category";
     pieSeriesTemplate.dataFields.value = "value";
     pieSeriesTemplate.labels.template.disabled = true;

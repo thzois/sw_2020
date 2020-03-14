@@ -2,3 +2,4 @@ data-analysis/.env
 *.DS*
 data-analysis/tweets/*.json
 data-analysis/tweets/cleaned/*.json
+web-app/event*.html
