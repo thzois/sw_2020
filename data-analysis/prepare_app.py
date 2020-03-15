@@ -1,3 +1,6 @@
+from swanalytics_logger import get_sw_logger
+swanalytics_logger = get_sw_logger()
+
 from collections import OrderedDict
 from operator import itemgetter
 from datetime import timedelta
@@ -267,12 +270,13 @@ def world_data(events):
 def topic_analysis_css_remove(events):
     for event in events["events"]:
         filename = event["start_date"] + "_" + event["end_date"] + ".html"
-        file_path = f"../web-app/results/topic_analysis/pyLDAvis_{filename}"
+        file_path = f"tweets/results/topic_analysis/pyLDAvis_{filename}"
+        file_path_dest = f"../web-app/results/topic_analysis/pyLDAvis_{filename}"
         css_search = '<link rel="stylesheet" type="text/css" href="https://cdn.rawgit.com/bmabey/pyLDAvis/files/ldavis.v1.0.0.css">'
         html_file = open(file_path).read()
         try:
             html_file = html_file.replace(css_search, '')
-            write_html_file = open(file_path, 'w')
+            write_html_file = open(file_path_dest, 'w')
             write_html_file.write(html_file)
             write_html_file.close()
         except:
@@ -280,11 +284,13 @@ def topic_analysis_css_remove(events):
 
 
 def main():
+    swanalytics_logger.info("Preparing the application")
     events = read_events()
     sentiment_data(events)
     world_data(events)
     topic_analysis_css_remove(events)
     generate_html(events)
+    swanalytics_logger.info("Open your browser and visit localhost:8080")
 
 
 if __name__ == "__main__":

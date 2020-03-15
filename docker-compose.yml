@@ -1,13 +1,12 @@
 version: '3.4'
 
 services:
-  # set DATA_ANALYSIS=true to trigger fetching, 
-  # cleaning and sentiment analysis of the data. 
   data-analysis:
     image: "data-analysis"
     container_name: data-analysis
     environment:
-      - DATA_ANALYSIS=true
+      - DATA_ANALYSIS=false   # CAUTION: setting DATA_ANALYSIS=true will REMOVE all the currently fetched and analyzed data. 
+                              # It will trigger fetching sentiment and topic analysis of according to the events.json.
     build:
       context: .
     volumes:
@@ -16,7 +15,6 @@ services:
       - ./web-app:/web-app
     command: sh -c "./run_app.sh"
 
-  # the container should start only after data-analysis
   web-app:
     image: "nginx:1.17.4"
     container_name: web-app

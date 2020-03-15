@@ -1,4 +1,4 @@
-FROM python:3.7.7 AS base-image
+FROM python:3.7.6
 
 # install requirements
 RUN pip install --no-cache-dir vaderSentiment

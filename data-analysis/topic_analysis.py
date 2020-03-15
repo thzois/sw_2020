@@ -1,4 +1,7 @@
 from nltk.tokenize.treebank import TreebankWordDetokenizer
+from swanalytics_logger import get_sw_logger
+swanalytics_logger = get_sw_logger()
+
 from pyLDAvis import gensim as gensim_pyLDAvis
 from gensim.utils import simple_preprocess
 from gensim.models import CoherenceModel
@@ -7,8 +10,8 @@ from textblob import TextBlob, Word
 from nltk.corpus import stopwords
 from gensim import corpora
 
-import pyLDAvis as pyLDAvis
 import itertools
+import pyLDAvis
 import enchant  # vocabulary to process words stuck together
 import gensim
 import string
@@ -160,7 +163,8 @@ def model_config(corpus, dictionary, num_topics=10, random_state=100):
                                           chunksize=100,
                                           passes=10,
                                           alpha='auto',
-                                          per_word_topics=True)
+                                          per_word_topics=True,
+                                          eval_every=None)
     return lda
 
 
@@ -209,20 +213,27 @@ def get_model_out(dict_df, num_topics=None, limit=31, start=2, step=3,
             topic_weights.append([w for i, w in row_list[0]])
 
         panel = gensim_pyLDAvis.prepare(model, corpus, id2word, mds='tsne')  #
-        pyLDAvis.save_html(panel, f'../web-app/results/topic_analysis/pyLDAvis_{key}.html')
+        pyLDAvis.save_html(panel, f'tweets/results/topic_analysis/pyLDAvis_{key}.html')
+
+
+def read_events():
+    with open("events.json", "r") as read_file:
+        return json.load(read_file)
 
 
 def topic_analysis():
-    with open("events.json", "r") as events:
-        for event in events["events"]:
-            dict_df = get_topic_data(event)
+    events = read_events()
+    for event in events["events"]:
+        swanalytics_logger.info(f"[{event['start_date']} to {event['end_date']}] {event['title']}")
+        dict_df = get_topic_data(event)
 
-            # change num_topics to some value (11) for a fast run, else None
-            get_model_out(dict_df=dict_df, num_topics=11, limit=35, start=8, step=5,
-                        show_num_topics=-1, word_map=False, random_state=100)
+        # change num_topics to some value (11) for a fast run, else None
+        get_model_out(dict_df=dict_df, num_topics=11, limit=35, start=8, step=5,
+                    show_num_topics=-1, word_map=False, random_state=100)
 
 
 def main():
+    swanalytics_logger.info("Started topic analysis")
     topic_analysis()
 
 

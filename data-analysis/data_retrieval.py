@@ -1,4 +1,7 @@
 from pandas_datareader.data import DataReader
+from swanalytics_logger import get_sw_logger
+swanalytics_logger = get_sw_logger()
+
 from datetime import datetime
 from datetime import timedelta
 from dotenv import load_dotenv
@@ -26,20 +29,20 @@ def limit_handler(cursor):
         try:
             yield cursor.next()
         except tweepy.RateLimitError as b:
-            print("Rate limit hit:", b)
+            swanalytics_logger.exception("Rate limit hit: ")
             time.sleep(15 * 60)
         except tweepy.TweepError as e:
             d = literal_eval(e.reason)
             if account_exceed in d["message"]:
-                print("Monthly rate limit reached:", e)
+                swanalytics_logger.exception("Monthly rate limit reached:")
                 break
             elif e.response is not None:
                 if hasattr(e.response, 'status_code'):
                     if e.response.status_code == 420 or e.response.status_code == 429:
-                        print("Rate limit hit:", e)
+                        swanalytics_logger.exception("Rate limit hit: ")
                         time.sleep(15 * 60)
             else:
-                print("Break cause of exception:", e)
+                swanalytics_logger.exception("Break cause of exception:")
                 break
         except StopIteration:
             break
@@ -57,13 +60,13 @@ def get_twitter_stock_data(events):
     auth = tweepy.OAuthHandler(API_KEY, API_SECRET)
     auth.set_access_token(ACCESS_TOKEN, ACCESS_TOKEN_SECRET)
     api = tweepy.API(auth)
-    
+
     for event in events["events"]:
-        print("[{} to {}]".format(event["start_date"], event["end_date"]), event["title"])
+        swanalytics_logger.info(f"[{event['start_date']} to {event['end_date']}] {event['title']}")
         
         stock_price = DataReader(events["stock"], "yahoo", event["start_date"], event["end_date"])
         stock_price.to_csv("stocks/" + event["start_date"] + "_" + event["end_date"] + ".csv")
-        print("Stock data received")
+        swanalytics_logger.info("Stock data received")
 
         # prepare query string
         # see: https://developer.twitter.com/en/docs/tweets/rules-and-filtering/guides/using-premium-operators
@@ -98,7 +101,7 @@ def get_twitter_stock_data(events):
             if(start_dateobj > end_dateobj):
                 break
     
-        print("Tweets fetched:", len(tweets["tweets"]), "\n")
+        swanalytics_logger.info(f"Tweets fetched: {str(len(tweets['tweets']))}")
 
         # got all event data - write them to file
         if len(tweets["tweets"]) > 0:
@@ -108,9 +111,9 @@ def get_twitter_stock_data(events):
 
 
 def main():
-    # events = read_events()
-    # get_twitter_stock_data(events)
-    print("GET DATA")
+    swanalytics_logger.info("Started receiving Twitter & Stock data")
+    events = read_events()
+    get_twitter_stock_data(events)
 
 
 if __name__ == "__main__":

@@ -1,4 +1,7 @@
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
+from swanalytics_logger import get_sw_logger
+swanalytics_logger = get_sw_logger()
+
 from datetime import datetime
 
 import pycountry_convert
@@ -30,6 +33,7 @@ def search_location(location):
 
 def clean_and_sentiment(events):
     for event in events["events"]:
+        swanalytics_logger.info(f"[{event['start_date']} to {event['end_date']}] {event['title']}")
         event_file = event["start_date"] + "_" + event["end_date"] + ".json"
         with open("tweets/" + event_file, 'r') as read_file:
             # list (array) of tweets
@@ -147,6 +151,7 @@ def clean_and_sentiment(events):
 
 
 def main():
+    swanalytics_logger.info("Started data cleaning and sentiment analysis")
     events = read_events()
     clean_and_sentiment(events)
 
