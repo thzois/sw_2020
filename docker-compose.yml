@@ -6,11 +6,15 @@ services:
   data-analysis:
     image: "data-analysis"
     container_name: data-analysis
-    restart: always
+    environment:
+      - DATA_ANALYSIS=true
     build:
       context: .
-      args:
-        - DATA_ANALYSIS=false
+    volumes:
+      - ./data-analysis:/data-analysis
+      - ./data-analysis/nltk_data:/usr/local/share/nltk_data
+      - ./web-app:/web-app
+    command: sh -c "./run_app.sh"
 
   # the container should start only after data-analysis
   web-app:

@@ -1,4 +1,4 @@
-FROM python:3.7.7
+FROM python:3.7.7 AS base-image
 
 # install requirements
 RUN pip install --no-cache-dir vaderSentiment
@@ -18,11 +18,11 @@ RUN python -m spacy download en
 RUN pip install --no-cache-dir pyenchant
 RUN apt update && apt-get install -y libenchant-dev 
 
-# copy files
-COPY data-analysis /data-analysis
-COPY data-analysis/nltk_data /usr/local/share/nltk_data
-COPY web-app /web-app
+# create directories to mount data from host
+RUN mkdir /data-analysis
+RUN mkdir /web-app
+RUN mkdir /usr/local/share/nltk_data
+
 WORKDIR /data-analysis
 
-ARG DATA_ANALYSIS
-RUN if [ "$DATA_ANALYSIS" = "true" ] ; then ./run_app.sh ; else echo "Bypassing data analysis"; fi
+ENTRYPOINT []

@@ -210,3 +210,21 @@ def get_model_out(dict_df, num_topics=None, limit=31, start=2, step=3,
 
         panel = gensim_pyLDAvis.prepare(model, corpus, id2word, mds='tsne')  #
         pyLDAvis.save_html(panel, f'../web-app/results/topic_analysis/pyLDAvis_{key}.html')
+
+
+def topic_analysis():
+    with open("events.json", "r") as events:
+        for event in events["events"]:
+            dict_df = get_topic_data(event)
+
+            # change num_topics to some value (11) for a fast run, else None
+            get_model_out(dict_df=dict_df, num_topics=11, limit=35, start=8, step=5,
+                        show_num_topics=-1, word_map=False, random_state=100)
+
+
+def main():
+    topic_analysis()
+
+
+if __name__ == "__main__":
+    main()

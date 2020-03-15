@@ -1,4 +1,3 @@
-from topic_analysis_methods import get_model_out, get_topic_data
 from collections import OrderedDict
 from operator import itemgetter
 from datetime import timedelta
@@ -58,7 +57,7 @@ def generate_html(events):
             sentiment_vs_stock_charts.append("\t\t\t\t\t\tsentiment_vs_stock(ctx, '" + filename + "');\n")
             sentiment_gauges.append("\t\t\t\t\t\tsentiment_gauge(ctx, '" + filename + "');\n")
             world_maps.append(f"\t\t\t\t\t\tgenerate_world_map('{filename}');\n")
-            topic_analyses.append(f'$("#topicAnalysis").load("results/topic_analysis/pyLDAvis_{event_name}.html");\n')
+            topic_analyses.append(f'\t\t\t$("#topicAnalysis").load("results/topic_analysis/pyLDAvis_{event_name}.html");\n')
             
             with open("tweets/results/" + filename, "r") as twitter_file:
                 twitterd = json.load(twitter_file)
@@ -263,20 +262,10 @@ def world_data(events):
                 json.dump(tweets_per_continent_final, outfile, ensure_ascii=True, indent=4)
 
 
-def topic_analysis(events):
-    for event in events["events"]:
-        dict_df = get_topic_data(event)
-
-        # change num_topics to some value (11) for a fast run, else None
-        get_model_out(dict_df=dict_df, num_topics=11, limit=35, start=8, step=5,
-                      show_num_topics=-1, word_map=False, random_state=100)
-
-
 def main():
     events = read_events()
     sentiment_data(events)
     world_data(events)
-    topic_analysis(events)
     generate_html(events)
 
 
