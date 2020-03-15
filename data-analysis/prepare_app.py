@@ -4,6 +4,7 @@ from datetime import timedelta
 from datetime import datetime
  
 import pandas as pd
+import codecs
 import json
 import glob
 import csv
@@ -263,10 +264,26 @@ def world_data(events):
                 json.dump(tweets_per_continent_final, outfile, ensure_ascii=True, indent=4)
 
 
+def topic_analysis_css_remove(events):
+    for event in events["events"]:
+        filename = event["start_date"] + "_" + event["end_date"] + ".html"
+        file_path = f"../web-app/results/topic_analysis/pyLDAvis_{filename}"
+        css_search = '<link rel="stylesheet" type="text/css" href="https://cdn.rawgit.com/bmabey/pyLDAvis/files/ldavis.v1.0.0.css">'
+        html_file = open(file_path).read()
+        try:
+            html_file = html_file.replace(css_search, '')
+            write_html_file = open(file_path, 'w')
+            write_html_file.write(html_file)
+            write_html_file.close()
+        except:
+            pass
+
+
 def main():
     events = read_events()
     sentiment_data(events)
     world_data(events)
+    topic_analysis_css_remove(events)
     generate_html(events)
 
 
