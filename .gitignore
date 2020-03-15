@@ -4,3 +4,4 @@ data-analysis/tweets/*.json
 data-analysis/tweets/cleaned/*.json
 web-app/event*.html
 data-analysis/__pycache__
+data-analysis/*.log
