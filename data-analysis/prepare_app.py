@@ -54,10 +54,11 @@ def generate_html(events):
         for event in events["events"]:
             event_name = event["start_date"] + "_" + event["end_date"]
             filename = f'{event_name}.json'
+            filename_html = f'{event_name}.html'
             sentiment_vs_stock_charts.append("\t\t\t\t\t\tsentiment_vs_stock(ctx, '" + filename + "');\n")
             sentiment_gauges.append("\t\t\t\t\t\tsentiment_gauge(ctx, '" + filename + "');\n")
             world_maps.append(f"\t\t\t\t\t\tgenerate_world_map('{filename}');\n")
-            topic_analyses.append(f'\t\t\t$("#topicAnalysis").load("results/topic_analysis/pyLDAvis_{event_name}.html");\n')
+            topic_analyses.append(f"\t\t\t\t\t\t\t\ttopic_analysis(ctx, '{filename_html}');\n")
             
             with open("tweets/results/" + filename, "r") as twitter_file:
                 twitterd = json.load(twitter_file)

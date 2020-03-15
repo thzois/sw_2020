@@ -33,6 +33,7 @@
   <script src="js/jquery-csv.js"></script>
   <script src="js/sent_vs_stock_chart.js"></script>
   <script src="js/sentiment_gauge_chart.js"></script>
+  <script src="js/topic_analysis.js"></script>
   <script src="js/world_map.js"></script>
 
 </head>
@@ -130,6 +131,10 @@
           <div class="row justify-content-center" style="margin-top:50px;">
             <div class="col-md-12">
               <div id="topicAnalysis"></div>
+              <script>
+                var ctx = $("#topicAnalysis");
+                // ### SWAnalytics TOPIC_ANALYSIS
+              </script>
             </div>
           </div>
         </div>
@@ -147,11 +152,6 @@
     <!-- /.container -->
   </footer>
 
-  <script>
-    $(function(){
-      // ### SWAnalytics TOPIC_ANALYSIS
-    });
-  </script>
 
   <!-- Bootstrap core JavaScript -->
   <script src="vendor/jquery/jquery.min.js"></script>
