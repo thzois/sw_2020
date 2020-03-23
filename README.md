@@ -8,8 +8,8 @@ SWAnalytics is a tool that helps data-analysts to understand if there is any cor
   - A number of hashtags 
   - The maximum number of tweets to search (for each day of the event)
 
-The tool treats each event as a separate entity. For each one retrieves 1) the relevant Twitter data and 2) the relevant stock price from Yahoo Finance. After some automatic data processing, the tool performs sentiment analysis for each tweet, using Vader in Python. Sentiment analysis produces the percentage of negativity, neutrality and positivity for that specific tweet. Finally, The tool builds and exposes a web-app with various interactive graphs on each page. Each page corresponds to one event. 
- 
+The tool treats each event as a separate entity. For each one retrieves 1) the relevant Twitter data and 2) the relevant stock price from Yahoo Finance. After an automated data processing, the tool performs sentiment analysis using Vader in order to determine the positivity, negativity or neutrality of a tweet, and topic analysis using LDA to automatically extract meaning from texts by identifying recurrent themes or topics. Finally, it builds and exposes a web-app with one page for each event where each one includes various interactive graphs.
+
 ### Use case scenario
 One of the most shorted stock this fiscal year on the market is [Tesla](https://www.tesla.com). At the end of January its short interest had reached 18% of its total available shares to trade. Controversial to 
 this high volume of short positions, Tesla’s stock has been rising ever since its lowest stock price since 2014, on the 3rd of June 2019 with a close of $178.97. 
@@ -39,4 +39,4 @@ https://thzois.com/swanalytics
 - Run 'docker-compose up -d --build' inside the main directory
 - Open your browser and navigate to localhost:8080
 
-In case you would like to skip the part of gathering, cleaning and sentiment analysis of the data because e.g: you have already done that, you need to set 'DATA_ANALYSIS=false' in docker-compose.yml.
+In case you would like to skip the part of gathering, cleaning and sentiment analysis of the data because e.g: you have already done that, you need to set 'DATA_ANALYSIS=false' in docker-compose.yml. The application produces a 'swanalytics.log' in order to inform you about the various data-processing events.
