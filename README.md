@@ -20,9 +20,7 @@ periods and the loss of key personnel have more strongly influenced the movement
 In the beginning of 2020 we see a financial chart of the company that follows an increasing parabolic trend ever since the 3rd of June 2019. With controversial topics like 
 the release and presentation of Tesla’s cyber truck, during this period Tesla has had to face many bluders and experienced great success on the stock market. 
 This research aims to look at the sentiment of Tesla followers on [Twitter](https://twitter.com) during important events/announcements made by the company or its CEO and find a relationship between 
-Twitter sentiment and the state of the investors interest (expressed in the stock price) in the following 3 trading days. Afterwards, the research moves to investigate whether 
-there are differences of sentiment within the demographics of the Twitter users for each analysed event/announcement: number of followers, geographic data, age, number of retweets 
-on the topic (engagement) etc.
+Twitter sentiment and the state of the investors interest (expressed in the stock price) in the following 3 trading days. 
 
 In this research we are interested in the following events:
 - <strong>24th of July 2019</strong>: Tesla suffers its worst day of the year after brutal earnings report and loss of technology chief.
