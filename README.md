@@ -29,6 +29,9 @@ In this research we are interested in the following events:
 - <strong>21st of November 2019</strong>: Tesla unveils its new cyber truck.
 - <strong>4th of February 2020</strong>: Tesla reaches its highest stock price till date of $962.86.
 
+### Demo
+https://thzois.com/swanalytics
+
 ### Requirements
 - Install [Docker](https://docs.docker.com/install/) and [Docker Compose](https://docs.docker.com/compose/install/)
 
